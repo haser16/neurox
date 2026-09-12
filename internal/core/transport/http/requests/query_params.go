@@ -5,7 +5,6 @@ import (
 	"net/http"
 	core_errors "neurox/internal/core/errors"
 	"strconv"
-	"time"
 )
 
 func GetIntQueryParam(r *http.Request, key string) (*int, error) {
@@ -27,19 +26,12 @@ func GetIntQueryParam(r *http.Request, key string) (*int, error) {
 	return &val, nil
 }
 
-func GetDateQueryParam(r *http.Request, key string) (*time.Time, error) {
+func GetStringQueryParam(r *http.Request, key string) (string, error) {
 	param := r.URL.Query().Get(key)
+
 	if param == "" {
-		return nil, nil
+		return "", fmt.Errorf("query parameter %q is required", key)
 	}
 
-	layout := "2006-01-02"
-
-	date, err := time.Parse(layout, param)
-	if err != nil {
-		return nil, fmt.Errorf("param='%s' by key='%s' not a valid date: %v: %w",
-			param, key, err, core_errors.ErrInvalidArgument)
-	}
-
-	return &date, nil
+	return param, nil
 }
