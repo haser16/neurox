@@ -9,11 +9,13 @@ endif
 export PROJECT_ROOT
 
 env-up:
-	@docker compose up -d neurox-postgres
+	@docker compose up -d neurox-postgres && \
+	docker compose up -d rabbitmq
 
 env-down:
 	@docker compose down neurox-postgres && \
-	docker compose down port-forwarder
+	docker compose down port-forwarder && \
+	docker compose down rabbitmq
 
 env-cleanup:
 	@read -p "Clean all environment volume files? [y/N]: " ans; \
@@ -57,6 +59,12 @@ migrate-action:
 		-path=//migrations \
 		-database "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@neurox-postgres:5432/${POSTGRES_DB}?sslmode=disable" \
 		"$(action)"
+
+minio-up:
+	@docker compose up -d minio
+
+minio-down:
+	@docker compose down minio
 
 neurox-run:
 	@export LOGGER_FOLDER=${PROJECT_ROOT}/out/logs && \

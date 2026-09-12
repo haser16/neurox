@@ -21,3 +21,24 @@ services:
     command: tcp-listen:5432,fork,reuseaddr tcp-connect:neurox-postgres:5432
     ports:
       - "127.0.0.1:5432:5432"
+
+  minio:
+    image: minio/minio
+    container_name: neurox-minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: ${S3_ACCESS_KEY}
+      MINIO_ROOT_PASSWORD: ${S3_SECRET_KEY}
+    command: server /data --console-address ":9001"
+
+  rabbitmq:
+    image: rabbitmq:4.3.5-management-alpine
+    hostname: neurox-rabbit
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${PUBLISHER_USER}
+      RABBITMQ_DEFAULT_PASS: ${PUBLISHER_PASSWORD}
