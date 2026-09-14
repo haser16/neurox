@@ -3,7 +3,6 @@ package broker_redis
 import (
 	"context"
 	"fmt"
-	core_logger "neurox/internal/core/logger"
 
 	"github.com/rabbitmq/amqp091-go"
 )
@@ -28,7 +27,6 @@ func NewConsumer(conn *Connection) (*Consumer, error) {
 }
 
 func (c *Consumer) Listen(ctx context.Context, queueName, consumerTag string, handler HandlerFunc) error {
-	log := core_logger.FromContext(ctx)
 	msgs, err := c.channel.ConsumeWithContext(
 		ctx,
 		queueName,
@@ -43,22 +41,17 @@ func (c *Consumer) Listen(ctx context.Context, queueName, consumerTag string, ha
 		return fmt.Errorf("failed to start consuming: %w", err)
 	}
 
-	log.Debug("[WORKER] Started listening on queue")
-
 	for {
 		select {
 		case <-ctx.Done():
-			log.Debug("[WORKER] Stopping listener: context canceled")
 			return nil
 
 		case msg, ok := <-msgs:
 			if !ok {
-				log.Debug("[WORKER] Consumer channel closed by broker")
 				return nil
 			}
 
 			if err := handler(ctx, msg.Body); err != nil {
-				log.Debug("[WORKER] Error handling message. Requeuing...")
 				_ = msg.Nack(false, true)
 			} else {
 				_ = msg.Ack(false)

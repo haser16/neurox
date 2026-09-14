@@ -10,12 +10,14 @@ export PROJECT_ROOT
 
 env-up:
 	@docker compose up -d neurox-postgres && \
-	docker compose up -d rabbitmq
+	docker compose up -d rabbitmq && \
+	docker compose up -d redis
 
 env-down:
 	@docker compose down neurox-postgres && \
 	docker compose down port-forwarder && \
-	docker compose down rabbitmq
+	docker compose down rabbitmq && \
+	docker compose down redis
 
 env-cleanup:
 	@read -p "Clean all environment volume files? [y/N]: " ans; \
@@ -65,6 +67,11 @@ minio-up:
 
 minio-down:
 	@docker compose down minio
+
+email-sender-run:
+	@export LOGGER_FOLDER=${PROJECT_ROOT}/out/logs && \
+        	go mod tidy && \
+        	go run ${PROJECT_ROOT}/cmd/workers/email-sender/main.go
 
 neurox-run:
 	@export LOGGER_FOLDER=${PROJECT_ROOT}/out/logs && \
