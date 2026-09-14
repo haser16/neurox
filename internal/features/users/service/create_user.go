@@ -2,10 +2,12 @@ package users_service
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	broker_redis "neurox/internal/broker/rabbitmq"
 	core_domain "neurox/internal/core/domain"
 
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -29,11 +31,26 @@ func (s *UsersService) CreateUser(
 		return core_domain.User{}, fmt.Errorf("creating user failed: %w", err)
 	}
 
+	token := uuid.New().String()
+	if err := s.usersRedisRepository.AddUserToken(ctx, token, userDomain.ID); err != nil {
+		return core_domain.User{}, fmt.Errorf("adding user token failed: %w", err)
+	}
+
+	url := fmt.Sprintf("http://localhost:5050/api/v1/users/login/verify?token=", token)
+	msg := broker_redis.VerificationEmail{
+		Email:      userDomain.Email,
+		ConfirmURL: url,
+	}
+	msgBytes, err := json.Marshal(msg)
+	if err != nil {
+		return core_domain.User{}, fmt.Errorf("serialization failed: %w", err)
+	}
+
 	if err := s.publisher.Publish(
 		ctx,
 		"",
 		broker_redis.QueueEmailTasks,
-		[]byte(userDomain.Email),
+		msgBytes,
 	); err != nil {
 		return core_domain.User{}, fmt.Errorf("publishing email task failed: %w", err)
 	}

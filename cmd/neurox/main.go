@@ -7,9 +7,11 @@ import (
 	broker_redis "neurox/internal/broker/rabbitmq"
 	core_logger "neurox/internal/core/logger"
 	core_pgx_pool "neurox/internal/core/repository/postgres/pool/pgx"
+	core_redis_client "neurox/internal/core/repository/redis/client"
 	core_middleware "neurox/internal/core/transport/http/middleware"
 	core_http_server "neurox/internal/core/transport/http/server"
 	users_postgres_repository "neurox/internal/features/users/repository/postgres"
+	users_redis_repository "neurox/internal/features/users/repository/redis"
 	users_service "neurox/internal/features/users/service"
 	users_transport_http "neurox/internal/features/users/transport/http"
 	storage_s3 "neurox/internal/storage/s3"
@@ -61,20 +63,22 @@ func main() {
 		logger.Fatal("failed to initialize rabbitmq connection", zap.Error(err))
 	}
 	defer rabbitmqConnection.Close()
-
 	publisher, err := broker_redis.NewPublisher(rabbitmqConnection)
 	if err != nil {
 		logger.Fatal("failed to initialize rabbitmq publisher", zap.Error(err))
 	}
 	defer publisher.Close()
-
 	if err := publisher.InitQueue(broker_redis.QueueEmailTasks); err != nil {
 		logger.Fatal("failed to initialize rabbitmq queue", zap.Error(err))
 	}
 
+	logger.Debug("initialize redis service")
+	redisClient := core_redis_client.NewClient(core_redis_client.NewConfigMust())
+
 	logger.Debug("initializing feature", zap.String("feature", "users"))
 	usersRepository := users_postgres_repository.NewUsersRepository(pool)
-	usersService := users_service.NewUsersService(usersRepository, tokenService, s3Storage, publisher)
+	usersRedisRepository := users_redis_repository.NewUsersRedisRepository(redisClient)
+	usersService := users_service.NewUsersService(usersRepository, usersRedisRepository, tokenService, s3Storage, publisher)
 	usersTransportHTTP := users_transport_http.NewUsersHTTPHandler(usersService)
 
 	logger.Debug("initializing HTTP server")

@@ -11,6 +11,11 @@ type Publisher struct {
 	channel *amqp091.Channel
 }
 
+type VerificationEmail struct {
+	Email      string `json:"email"`
+	ConfirmURL string `json:"confirm_url"`
+}
+
 func NewPublisher(conn *Connection) (*Publisher, error) {
 	ch, err := conn.Conn.Channel()
 	if err != nil {

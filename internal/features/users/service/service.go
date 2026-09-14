@@ -9,10 +9,11 @@ import (
 )
 
 type UsersService struct {
-	usersRepository UsersRepository
-	tokenService    auth.TokenService
-	s3              *storage_s3.Storage
-	publisher       *broker_redis.Publisher
+	usersRepository      UsersRepository
+	usersRedisRepository UsersRedisRepository
+	tokenService         auth.TokenService
+	s3                   *storage_s3.Storage
+	publisher            *broker_redis.Publisher
 }
 
 type UsersRepository interface {
@@ -43,16 +44,26 @@ type UsersRepository interface {
 	) error
 }
 
+type UsersRedisRepository interface {
+	AddUserToken(
+		ctx context.Context,
+		token string,
+		userID int64,
+	) error
+}
+
 func NewUsersService(
 	usersRepository UsersRepository,
+	usersRedisRepository UsersRedisRepository,
 	tokenService auth.TokenService,
 	s3 *storage_s3.Storage,
 	publisher *broker_redis.Publisher,
 ) *UsersService {
 	return &UsersService{
-		usersRepository: usersRepository,
-		tokenService:    tokenService,
-		s3:              s3,
-		publisher:       publisher,
+		usersRepository:      usersRepository,
+		usersRedisRepository: usersRedisRepository,
+		tokenService:         tokenService,
+		s3:                   s3,
+		publisher:            publisher,
 	}
 }
