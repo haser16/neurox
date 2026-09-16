@@ -42,6 +42,10 @@ type UsersRepository interface {
 		userID int64,
 		key string,
 	) error
+	EmailVerify(
+		ctx context.Context,
+		userID int64,
+	) error
 }
 
 type UsersRedisRepository interface {
@@ -49,6 +53,14 @@ type UsersRedisRepository interface {
 		ctx context.Context,
 		token string,
 		userID int64,
+	) error
+	GetUserID(
+		ctx context.Context,
+		token string,
+	) (int64, error)
+	Delete(
+		ctx context.Context,
+		token string,
 	) error
 }
 

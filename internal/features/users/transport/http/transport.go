@@ -39,6 +39,10 @@ type UsersService interface {
 		userID int64,
 		avatar users_service.Avatar,
 	) error
+	EmailVerify(
+		ctx context.Context,
+		token string,
+	) error
 }
 
 func NewUsersHTTPHandler(usersService UsersService) *UsersHTTPHandler {
@@ -78,6 +82,11 @@ func (h *UsersHTTPHandler) Routes() []core_http_server.Route {
 			Method:  http.MethodPost,
 			Path:    "/users/{id}/avatar",
 			Handler: h.UploadAvatar,
+		},
+		{
+			Method:  http.MethodGet,
+			Path:    "/users/login/verify",
+			Handler: h.EmailVerify,
 		},
 	}
 }

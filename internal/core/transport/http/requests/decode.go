@@ -36,7 +36,7 @@ func DecodeAndValidateRequest(r *http.Request, dest any) error {
 	}
 	if err != nil {
 		return fmt.Errorf(
-			"request validation: %v: %w",
+			"requests validation: %v: %w",
 			err,
 			core_errors.ErrInvalidArgument,
 		)

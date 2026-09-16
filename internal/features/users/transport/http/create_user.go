@@ -21,7 +21,7 @@ func (h *UsersHTTPHandler) CreateUser(rw http.ResponseWriter, r *http.Request) {
 	if err := core_http_request.DecodeAndValidateRequest(r, &request); err != nil {
 		responseHandler.ErrorResponse(
 			err,
-			"failed to decode and validate request",
+			"failed to decode and validate requests",
 		)
 		return
 	}

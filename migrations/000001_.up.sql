@@ -17,6 +17,6 @@ CREATE TABLE neurox.users(
 CREATE TABLE neurox.requests(
     id SERIAL PRIMARY KEY,
     prompt VARCHAR(1000) NOT NULL,
-    image VARCHAR(200),
+    image TEXT,
     user_id INT NOT NULL REFERENCES neurox.users(id) ON DELETE CASCADE
 );
