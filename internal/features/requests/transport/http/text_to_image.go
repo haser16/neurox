@@ -20,6 +20,18 @@ type TextToImageResponse struct {
 	Prompt string `json:"prompt"`
 }
 
+// TextToImage godoc
+// @Summary Generate image from text
+// @Description Generate an image based on the provided text prompt
+// @Tags requests
+// @Accept json
+// @Produce json
+// @Param request body TextToImageRequest true "Text to image request"
+// @Success 201 {object} TextToImageResponse "Successfully generated image"
+// @Failure 400 {object} core_http_response.ErrorResponse "Bad request"
+// @Failure 401 {object} core_http_response.ErrorResponse "Unauthorized"
+// @Failure 500 {object} core_http_response.ErrorResponse "Internal server error"
+// @Router /requests/text-to-image [post]
 func (h *RequestsHTTPHandler) TextToImage(rw http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	log := core_logger.FromContext(ctx)

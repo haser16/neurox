@@ -73,6 +73,14 @@ email-sender-run:
         	go mod tidy && \
         	go run ${PROJECT_ROOT}/cmd/workers/email-sender/main.go
 
+swagger-gen:
+	@docker compose run --rm swagger \
+		init \
+		-g cmd/neurox/main.go \
+		-o docs \
+		--parseInternal \
+		--parseDependency
+
 neurox-run:
 	@export LOGGER_FOLDER=${PROJECT_ROOT}/out/logs && \
     	export POSTGRES_HOST=localhost && \

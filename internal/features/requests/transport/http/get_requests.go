@@ -17,6 +17,18 @@ type GetRequestsResponse struct {
 	Prompt string `json:"prompt"`
 }
 
+// GetRequests godoc
+// @Summary Get user requests
+// @Description Get requests for the authenticated user with pagination
+// @Tags requests
+// @Produce json
+// @Param limit query int false "Number of requests to return"
+// @Param offset query int false "Number of requests to skip"
+// @Success 200 {array} GetRequestsResponse "Successfully retrieved requests"
+// @Failure 400 {object} core_http_response.ErrorResponse "Bad request"
+// @Failure 401 {object} core_http_response.ErrorResponse "Unauthorized"
+// @Failure 500 {object} core_http_response.ErrorResponse "Internal server error"
+// @Router /requests [get]
 func (h *RequestsHTTPHandler) GetRequests(rw http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	log := core_logger.FromContext(ctx)

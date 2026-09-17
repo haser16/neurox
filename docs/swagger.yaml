@@ -1,0 +1,376 @@
+basePath: /api/v1
+definitions:
+  internal_features_requests_transport_http.GetRequestsResponse:
+    properties:
+      id:
+        type: integer
+      image:
+        type: string
+      prompt:
+        type: string
+    type: object
+  internal_features_requests_transport_http.TextToImageRequest:
+    properties:
+      prompt:
+        type: string
+    type: object
+  internal_features_requests_transport_http.TextToImageResponse:
+    properties:
+      id:
+        type: integer
+      image:
+        type: string
+      prompt:
+        type: string
+    type: object
+  internal_features_users_transport_http.AuthenticateUserRequest:
+    properties:
+      password:
+        example: password123@@
+        type: string
+      username:
+        example: ivanich123
+        type: string
+    type: object
+  internal_features_users_transport_http.AuthenticateUserResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  internal_features_users_transport_http.CreateUserRequest:
+    properties:
+      email:
+        example: ivanich123@gmail.com
+        type: string
+      password:
+        example: password123@@
+        maxLength: 30
+        minLength: 8
+        type: string
+      phone:
+        example: "+375296547812"
+        type: string
+      username:
+        example: ivanich123
+        maxLength: 100
+        minLength: 2
+        type: string
+    required:
+    - email
+    - password
+    - username
+    type: object
+  internal_features_users_transport_http.CreateUserResponse:
+    properties:
+      avatar:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      phone:
+        type: string
+      username:
+        type: string
+    type: object
+  internal_features_users_transport_http.GetUserByIDResponse:
+    properties:
+      avatar:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      phone:
+        type: string
+      username:
+        type: string
+    type: object
+  internal_features_users_transport_http.GetUserByUsernameResponse:
+    properties:
+      avatar:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      phone:
+        type: string
+      username:
+        type: string
+    type: object
+  neurox_internal_core_transport_http_response.ErrorResponse:
+    properties:
+      error:
+        type: string
+      message:
+        type: string
+    type: object
+host: localhost:5050
+info:
+  contact: {}
+  description: Neurox Application REST-API schema
+  title: Neurox
+  version: "1.0"
+paths:
+  /requests:
+    get:
+      description: Get requests for the authenticated user with pagination
+      parameters:
+      - description: Number of requests to return
+        in: query
+        name: limit
+        type: integer
+      - description: Number of requests to skip
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved requests
+          schema:
+            items:
+              $ref: '#/definitions/internal_features_requests_transport_http.GetRequestsResponse'
+            type: array
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/neurox_internal_core_transport_http_response.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/neurox_internal_core_transport_http_response.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/neurox_internal_core_transport_http_response.ErrorResponse'
+      summary: Get user requests
+      tags:
+      - requests
+  /requests/text-to-image:
+    post:
+      consumes:
+      - application/json
+      description: Generate an image based on the provided text prompt
+      parameters:
+      - description: Text to image request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_features_requests_transport_http.TextToImageRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successfully generated image
+          schema:
+            $ref: '#/definitions/internal_features_requests_transport_http.TextToImageResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/neurox_internal_core_transport_http_response.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/neurox_internal_core_transport_http_response.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/neurox_internal_core_transport_http_response.ErrorResponse'
+      summary: Generate image from text
+      tags:
+      - requests
+  /users:
+    get:
+      description: Get user by username
+      parameters:
+      - description: Username
+        in: query
+        name: username
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved user
+          schema:
+            $ref: '#/definitions/internal_features_users_transport_http.GetUserByUsernameResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/neurox_internal_core_transport_http_response.ErrorResponse'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/neurox_internal_core_transport_http_response.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/neurox_internal_core_transport_http_response.ErrorResponse'
+      summary: Get user by username
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      description: Create new user in system
+      parameters:
+      - description: Create user request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_features_users_transport_http.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successfully created user
+          schema:
+            $ref: '#/definitions/internal_features_users_transport_http.CreateUserResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/neurox_internal_core_transport_http_response.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/neurox_internal_core_transport_http_response.ErrorResponse'
+      summary: Create new user
+      tags:
+      - users
+  /users/{id}:
+    delete:
+      description: Delete user from system
+      parameters:
+      - description: User ID
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: User successfully deleted
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/neurox_internal_core_transport_http_response.ErrorResponse'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/neurox_internal_core_transport_http_response.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/neurox_internal_core_transport_http_response.ErrorResponse'
+      summary: Delete user
+      tags:
+      - users
+    get:
+      description: Get user by ID
+      parameters:
+      - description: User ID
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved user
+          schema:
+            $ref: '#/definitions/internal_features_users_transport_http.GetUserByIDResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/neurox_internal_core_transport_http_response.ErrorResponse'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/neurox_internal_core_transport_http_response.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/neurox_internal_core_transport_http_response.ErrorResponse'
+      summary: Get user by ID
+      tags:
+      - users
+  /users/{id}/avatar:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload avatar for user
+      parameters:
+      - description: User ID
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: User avatar
+        in: formData
+        name: avatar
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Avatar successfully uploaded
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/neurox_internal_core_transport_http_response.ErrorResponse'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/neurox_internal_core_transport_http_response.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/neurox_internal_core_transport_http_response.ErrorResponse'
+      summary: Upload user avatar
+      tags:
+      - users
+  /users/authenticate:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user with JWT
+      parameters:
+      - description: Authenticate user request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_features_users_transport_http.AuthenticateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successfully authenticated user
+          schema:
+            $ref: '#/definitions/internal_features_users_transport_http.AuthenticateUserResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/neurox_internal_core_transport_http_response.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/neurox_internal_core_transport_http_response.ErrorResponse'
+      summary: Authenticate user
+      tags:
+      - users
+schemes:
+- http
+swagger: "2.0"
