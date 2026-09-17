@@ -36,7 +36,10 @@ func (s *UsersService) CreateUser(
 		return core_domain.User{}, fmt.Errorf("adding user token failed: %w", err)
 	}
 
-	url := fmt.Sprintf("http://localhost:5050/api/v1/users/login/verify?token=", token)
+	url := fmt.Sprintf(
+		"http://localhost:5050/api/v1/users/login/verify?token=%s",
+		token,
+	)
 	msg := broker_redis.VerificationEmail{
 		Email:      userDomain.Email,
 		ConfirmURL: url,

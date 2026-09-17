@@ -10,10 +10,14 @@ import (
 	core_redis_client "neurox/internal/core/repository/redis/client"
 	core_middleware "neurox/internal/core/transport/http/middleware"
 	core_http_server "neurox/internal/core/transport/http/server"
+	requests_postgres_repository "neurox/internal/features/requests/repository/postgres"
+	requests_service "neurox/internal/features/requests/service"
+	request_transport_http "neurox/internal/features/requests/transport/http"
 	users_postgres_repository "neurox/internal/features/users/repository/postgres"
 	users_redis_repository "neurox/internal/features/users/repository/redis"
 	users_service "neurox/internal/features/users/service"
 	users_transport_http "neurox/internal/features/users/transport/http"
+	integrations_gemini "neurox/internal/integrations/gemini"
 	storage_s3 "neurox/internal/storage/s3"
 	"os"
 	"os/signal"
@@ -75,11 +79,30 @@ func main() {
 	logger.Debug("initialize redis service")
 	redisClient := core_redis_client.NewClient(core_redis_client.NewConfigMust())
 
+	logger.Debug("initialize gemini service")
+	geminiClient, err := integrations_gemini.NewClient(ctx, integrations_gemini.NewConfigMust())
+	if err != nil {
+		logger.Fatal("failed to initialize gemini client", zap.Error(err))
+	}
+
 	logger.Debug("initializing feature", zap.String("feature", "users"))
 	usersRepository := users_postgres_repository.NewUsersRepository(pool)
 	usersRedisRepository := users_redis_repository.NewUsersRedisRepository(redisClient)
-	usersService := users_service.NewUsersService(usersRepository, usersRedisRepository, tokenService, s3Storage, publisher)
+	usersService := users_service.NewUsersService(
+		usersRepository,
+		usersRedisRepository,
+		tokenService,
+		s3Storage,
+		publisher)
 	usersTransportHTTP := users_transport_http.NewUsersHTTPHandler(usersService)
+
+	logger.Debug("initializing feature", zap.String("feature", "requests"))
+	requestsRepository := requests_postgres_repository.NewRequestsRepository(pool)
+	requestsService := requests_service.NewRequestsService(
+		requestsRepository,
+		geminiClient,
+		s3Storage)
+	requestsTransportHTTP := request_transport_http.NewRequestsHTTPHandler(requestsService)
 
 	logger.Debug("initializing HTTP server")
 
@@ -97,6 +120,7 @@ func main() {
 	)
 
 	apiVersionRouter.RegisterRoutes(usersTransportHTTP.Routes()...)
+	apiVersionRouter.RegisterRoutes(requestsTransportHTTP.Routes()...)
 
 	httpServer.RegisterAPIRouters(apiVersionRouter)
 
