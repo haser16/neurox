@@ -18,6 +18,12 @@ type RequestsRepository interface {
 		ctx context.Context,
 		requests core_domain.Request,
 	) (core_domain.Request, error)
+	GetRequests(
+		ctx context.Context,
+		limit *int,
+		offset *int,
+		userID int64,
+	) ([]core_domain.Request, error)
 }
 
 func NewRequestsService(

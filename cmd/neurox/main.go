@@ -88,12 +88,20 @@ func main() {
 	logger.Debug("initializing feature", zap.String("feature", "users"))
 	usersRepository := users_postgres_repository.NewUsersRepository(pool)
 	usersRedisRepository := users_redis_repository.NewUsersRedisRepository(redisClient)
-	usersService := users_service.NewUsersService(usersRepository, usersRedisRepository, tokenService, s3Storage, publisher)
+	usersService := users_service.NewUsersService(
+		usersRepository,
+		usersRedisRepository,
+		tokenService,
+		s3Storage,
+		publisher)
 	usersTransportHTTP := users_transport_http.NewUsersHTTPHandler(usersService)
 
 	logger.Debug("initializing feature", zap.String("feature", "requests"))
 	requestsRepository := requests_postgres_repository.NewRequestsRepository(pool)
-	requestsService := requests_service.NewRequestsService(requestsRepository, geminiClient, s3Storage)
+	requestsService := requests_service.NewRequestsService(
+		requestsRepository,
+		geminiClient,
+		s3Storage)
 	requestsTransportHTTP := request_transport_http.NewRequestsHTTPHandler(requestsService)
 
 	logger.Debug("initializing HTTP server")

@@ -17,6 +17,12 @@ type RequestsService interface {
 		ctx context.Context,
 		request core_domain.Request,
 	) (core_domain.Request, error)
+	GetRequests(
+		ctx context.Context,
+		limit *int,
+		offset *int,
+		userID int64,
+	) ([]core_domain.Request, error)
 }
 
 func NewRequestsHTTPHandler(requestsService RequestsService) *RequestsHTTPHandler {
@@ -31,6 +37,14 @@ func (h *RequestsHTTPHandler) Routes() []core_http_server.Route {
 			Method:  http.MethodPost,
 			Path:    "/requests/text-to-image",
 			Handler: h.TextToImage,
+			Middleware: []core_middleware.Middleware{
+				core_middleware.Auth(),
+			},
+		},
+		{
+			Method:  http.MethodGet,
+			Path:    "/requests",
+			Handler: h.GetRequests,
 			Middleware: []core_middleware.Middleware{
 				core_middleware.Auth(),
 			},
