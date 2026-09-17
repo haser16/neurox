@@ -12,6 +12,17 @@ type CreateUserRequest UserRequest
 
 type CreateUserResponse UserResponse
 
+// CreateUser godoc
+// @Summary Create new user
+// @Description Create new user in system
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param request body CreateUserRequest true "Create user request body"
+// @Success 201 {object} CreateUserResponse "Successfully created user"
+// @Failure 400 {object} core_http_response.ErrorResponse "Bad request"
+// @Failure 500 {object} core_http_response.ErrorResponse "Internal server error"
+// @Router /users [post]
 func (h *UsersHTTPHandler) CreateUser(rw http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	log := core_logger.FromContext(ctx)

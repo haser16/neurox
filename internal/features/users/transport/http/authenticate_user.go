@@ -8,14 +8,25 @@ import (
 )
 
 type AuthenticateUserRequest struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
+	Username string `json:"username" example:"ivanich123"`
+	Password string `json:"password" example:"password123@@"`
 }
 
 type AuthenticateUserResponse struct {
 	Token string `json:"token"`
 }
 
+// AuthenticateUser godoc
+// @Summary Authenticate user
+// @Description Authenticate user with JWT
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param request body AuthenticateUserRequest true "Authenticate user request body"
+// @Success 201 {object} AuthenticateUserResponse "Successfully authenticated user"
+// @Failure 400 {object} core_http_response.ErrorResponse "Bad request"
+// @Failure 500 {object} core_http_response.ErrorResponse "Internal server error"
+// @Router /users/authenticate [post]
 func (h *UsersHTTPHandler) AuthenticateUser(rw http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	log := core_logger.FromContext(ctx)

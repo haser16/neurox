@@ -8,6 +8,19 @@ import (
 	users_service "neurox/internal/features/users/service"
 )
 
+// UploadAvatar godoc
+// @Summary Upload user avatar
+// @Description Upload avatar for user
+// @Tags users
+// @Accept multipart/form-data
+// @Produce json
+// @Param id path int64 true "User ID"
+// @Param avatar formData file true "User avatar"
+// @Success 204 "Avatar successfully uploaded"
+// @Failure 400 {object} core_http_response.ErrorResponse "Bad request"
+// @Failure 404 {object} core_http_response.ErrorResponse "User not found"
+// @Failure 500 {object} core_http_response.ErrorResponse "Internal server error"
+// @Router /users/{id}/avatar [post]
 func (h *UsersHTTPHandler) UploadAvatar(rw http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	log := core_logger.FromContext(ctx)

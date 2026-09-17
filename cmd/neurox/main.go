@@ -25,8 +25,16 @@ import (
 	"time"
 
 	"go.uber.org/zap"
+
+	_ "neurox/docs"
 )
 
+// @title Neurox
+// @version 1.0
+// @description Neurox Application REST-API schema
+// @host localhost:5050
+// @BasePath /api/v1
+// @schemes http
 func main() {
 	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer cancel()
@@ -109,6 +117,7 @@ func main() {
 	httpServer := core_http_server.NewHTTPServer(
 		core_http_server.NewConfigMust(),
 		logger,
+		core_middleware.CORS(),
 		core_middleware.RequestID(),
 		core_middleware.Logger(logger),
 		core_middleware.Trace(),
@@ -123,6 +132,7 @@ func main() {
 	apiVersionRouter.RegisterRoutes(requestsTransportHTTP.Routes()...)
 
 	httpServer.RegisterAPIRouters(apiVersionRouter)
+	httpServer.RegisterSwagger()
 
 	if err := httpServer.Run(ctx); err != nil {
 		logger.Error("HTTP server run error", zap.Error(err))
