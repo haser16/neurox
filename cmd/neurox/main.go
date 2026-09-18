@@ -17,6 +17,9 @@ import (
 	users_redis_repository "neurox/internal/features/users/repository/redis"
 	users_service "neurox/internal/features/users/service"
 	users_transport_http "neurox/internal/features/users/transport/http"
+	web_fs_repository "neurox/internal/features/web/repository/file_system"
+	web_service "neurox/internal/features/web/service"
+	web_transport_http "neurox/internal/features/web/transport/http"
 	integrations_gemini "neurox/internal/integrations/gemini"
 	storage_s3 "neurox/internal/storage/s3"
 	"os"
@@ -112,6 +115,11 @@ func main() {
 		s3Storage)
 	requestsTransportHTTP := request_transport_http.NewRequestsHTTPHandler(requestsService)
 
+	logger.Debug("initializing feature", zap.String("feature", "web"))
+	webRepository := web_fs_repository.NewWebRepository()
+	webService := web_service.NewWebService(webRepository)
+	webTransportHTTP := web_transport_http.NewWebHTTPHandler(webService)
+
 	logger.Debug("initializing HTTP server")
 
 	httpServer := core_http_server.NewHTTPServer(
@@ -132,6 +140,7 @@ func main() {
 	apiVersionRouter.RegisterRoutes(requestsTransportHTTP.Routes()...)
 
 	httpServer.RegisterAPIRouters(apiVersionRouter)
+	httpServer.RegisterRoutes(webTransportHTTP.Routes()...)
 	httpServer.RegisterSwagger()
 
 	if err := httpServer.Run(ctx); err != nil {

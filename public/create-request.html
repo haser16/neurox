@@ -1,0 +1,2055 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Neurox — Создание изображения</title>
+
+    <meta
+            name="description"
+            content="Создайте изображение с помощью искусственного интеллекта Neurox."
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #ffffff;
+            color: #18181b;
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.5;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        textarea {
+            font-family: inherit;
+        }
+
+        button {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .container {
+            width: min(1180px, calc(100% - 48px));
+            margin: 0 auto;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.92);
+            border-bottom: 1px solid #f4f4f5;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .header-inner {
+            height: 76px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 21px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-mark {
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9px;
+            background: #18181b;
+            color: #ffffff;
+            font-size: 18px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .header-link {
+            color: #52525b;
+            font-size: 14px;
+            transition: color 0.2s ease;
+        }
+
+        .header-link:hover {
+            color: #18181b;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .generator-section {
+            min-height: calc(100vh - 76px);
+            padding: 75px 0 100px;
+            background:
+                    radial-gradient(
+                            circle at 50% 0%,
+                            #fafafa 0,
+                            #ffffff 50%
+                    );
+        }
+
+        .generator-header {
+            max-width: 760px;
+            margin-bottom: 42px;
+        }
+
+        .generator-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 12px;
+            margin-bottom: 20px;
+            border: 1px solid #e4e4e7;
+            border-radius: 999px;
+            background: #fafafa;
+            color: #52525b;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .generator-label-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #18181b;
+        }
+
+        .generator-header h1 {
+            margin: 0;
+            font-size: clamp(40px, 5vw, 58px);
+            line-height: 1.05;
+            letter-spacing: -2.5px;
+        }
+
+        .generator-header p {
+            max-width: 650px;
+            margin: 18px 0 0;
+            color: #71717a;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        /* =========================
+           GENERATOR LAYOUT
+        ========================= */
+
+        .generator-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+            gap: 22px;
+            align-items: stretch;
+        }
+
+        .panel {
+            border: 1px solid #e4e4e7;
+            border-radius: 16px;
+            background: #ffffff;
+        }
+
+        /* =========================
+           PROMPT PANEL
+        ========================= */
+
+        .prompt-panel {
+            display: flex;
+            flex-direction: column;
+            padding: 28px;
+        }
+
+        .panel-title {
+            margin: 0;
+            font-size: 19px;
+            letter-spacing: -0.4px;
+        }
+
+        .panel-description {
+            margin: 8px 0 26px;
+            color: #71717a;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .field-label {
+            color: #18181b;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .prompt-textarea {
+            width: 100%;
+            min-height: 220px;
+            padding: 14px;
+            resize: vertical;
+            border: 1px solid #d4d4d8;
+            border-radius: 9px;
+            outline: none;
+            background: #ffffff;
+            color: #18181b;
+            font-size: 14px;
+            line-height: 1.65;
+            transition:
+                    border-color 0.2s ease,
+                    box-shadow 0.2s ease;
+        }
+
+        .prompt-textarea::placeholder {
+            color: #a1a1aa;
+        }
+
+        .prompt-textarea:hover {
+            border-color: #a1a1aa;
+        }
+
+        .prompt-textarea:focus {
+            border-color: #18181b;
+            box-shadow: 0 0 0 3px rgba(24, 24, 27, 0.08);
+        }
+
+        .field-footer {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 8px;
+            color: #a1a1aa;
+            font-size: 11px;
+        }
+
+        .examples {
+            margin-top: 22px;
+        }
+
+        .examples-title {
+            margin-bottom: 10px;
+            color: #71717a;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .example-list {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .example-button {
+            padding: 10px 12px;
+            border: 1px solid #e4e4e7;
+            border-radius: 8px;
+            background: #fafafa;
+            color: #52525b;
+            font-size: 12px;
+            line-height: 1.5;
+            text-align: left;
+            cursor: pointer;
+            transition:
+                    border-color 0.2s ease,
+                    background-color 0.2s ease,
+                    color 0.2s ease;
+        }
+
+        .example-button:hover {
+            border-color: #a1a1aa;
+            background: #ffffff;
+            color: #18181b;
+        }
+
+        .example-button:active {
+            transform: translateY(1px);
+        }
+
+        .generate-button {
+            width: 100%;
+            min-height: 48px;
+            margin-top: 26px;
+            border: 1px solid #18181b;
+            border-radius: 9px;
+            background: #18181b;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition:
+                    background-color 0.2s ease,
+                    transform 0.2s ease,
+                    opacity 0.2s ease;
+        }
+
+        .generate-button:hover:not(:disabled) {
+            background: #27272a;
+            transform: translateY(-1px);
+        }
+
+        .generate-button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .generate-button:disabled {
+            cursor: not-allowed;
+            opacity: 0.65;
+            transform: none;
+        }
+
+        .generate-button-content {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+        }
+
+        /* =========================
+           RESULT PANEL
+        ========================= */
+
+        .result-panel {
+            min-height: 620px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .result-header {
+            height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 0 20px;
+            border-bottom: 1px solid #f4f4f5;
+        }
+
+        .result-title {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .result-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: #a1a1aa;
+            font-size: 11px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: #d4d4d8;
+        }
+
+        .loading-status-dot {
+            background: #18181b;
+            animation: statusPulse 1.4s ease-in-out infinite;
+        }
+
+        /* =========================
+           RESULT BODY
+        ========================= */
+
+        .result-body {
+            position: relative;
+            flex: 1;
+            min-height: 560px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            overflow: hidden;
+            background: #fafafa;
+        }
+
+        .result-body::before {
+            content: "";
+            position: absolute;
+            inset: -20%;
+            pointer-events: none;
+            opacity: 0;
+            background:
+                    radial-gradient(
+                            circle at 50% 50%,
+                            rgba(24, 24, 27, 0.055),
+                            transparent 45%
+                    );
+            transition: opacity 0.4s ease;
+        }
+
+        .result-body:has(.loading-state.active)::before {
+            opacity: 1;
+            animation: viewportPulse 3s ease-in-out infinite;
+        }
+
+        .result-empty {
+            position: relative;
+            z-index: 1;
+            max-width: 360px;
+            text-align: center;
+        }
+
+        .result-empty-icon {
+            width: 72px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            border-radius: 18px;
+            background: #ffffff;
+            color: #18181b;
+            font-size: 28px;
+            box-shadow:
+                    0 10px 30px rgba(24, 24, 27, 0.07);
+        }
+
+        .result-empty h2 {
+            margin: 0 0 8px;
+            font-size: 19px;
+            letter-spacing: -0.4px;
+        }
+
+        .result-empty p {
+            margin: 0;
+            color: #71717a;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        /* =========================
+           GENERATED IMAGE
+        ========================= */
+
+        .generated-image {
+            position: relative;
+            z-index: 2;
+            display: none;
+            width: 100%;
+            height: 100%;
+            max-height: 560px;
+            object-fit: contain;
+            border-radius: 10px;
+            background: #ffffff;
+            box-shadow:
+                    0 10px 35px rgba(24, 24, 27, 0.08);
+            animation: imageAppear 0.5s ease-out;
+        }
+
+        /* =========================
+           DOWNLOAD BUTTON
+        ========================= */
+
+        .download-button {
+            position: absolute;
+            z-index: 5;
+            right: 45px;
+            bottom: 45px;
+            display: none;
+            min-height: 42px;
+            padding: 0 16px;
+            border: 1px solid #18181b;
+            border-radius: 8px;
+            background: #18181b;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow:
+                    0 8px 24px rgba(24, 24, 27, 0.15);
+            transition:
+                    background-color 0.2s ease,
+                    transform 0.2s ease;
+        }
+
+        .download-button:hover {
+            background: #27272a;
+            transform: translateY(-1px);
+        }
+
+        .download-button:active {
+            transform: translateY(0);
+        }
+
+        /* =========================
+           LOADING
+        ========================= */
+
+        .loading-state {
+            position: relative;
+            z-index: 1;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .loading-state.active {
+            display: flex;
+        }
+
+        .loading-icon {
+            position: relative;
+            width: 64px;
+            height: 64px;
+            margin-bottom: 22px;
+            animation: loadingFloat 2.4s ease-in-out infinite;
+        }
+
+        .loading-ring {
+            position: absolute;
+            inset: 0;
+            border: 2px solid #e4e4e7;
+            border-top-color: #18181b;
+            border-radius: 50%;
+            animation:
+                    spin 1s linear infinite,
+                    ringPulse 2s ease-in-out infinite;
+        }
+
+        .loading-center {
+            position: absolute;
+            inset: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: #ffffff;
+            color: #18181b;
+            font-size: 17px;
+            box-shadow:
+                    0 5px 20px rgba(24, 24, 27, 0.05);
+        }
+
+        .loading-state h2 {
+            margin: 0 0 7px;
+            font-size: 18px;
+        }
+
+        .loading-state p {
+            min-height: 20px;
+            margin: 0;
+            color: #71717a;
+            font-size: 13px;
+            transition:
+                    opacity 0.3s ease,
+                    transform 0.3s ease;
+        }
+
+        .loading-dots {
+            display: inline-flex;
+            gap: 4px;
+            margin-left: 2px;
+        }
+
+        .loading-dots span {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #71717a;
+            animation: pulse 1.2s infinite ease-in-out;
+        }
+
+        .loading-dots span:nth-child(2) {
+            animation-delay: 0.15s;
+        }
+
+        .loading-dots span:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        /* =========================
+           RESULT FOOTER
+        ========================= */
+
+        .result-footer {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 16px 20px;
+            border-top: 1px solid #f4f4f5;
+            background: #ffffff;
+        }
+
+        .result-footer.visible {
+            display: flex;
+        }
+
+        .result-prompt {
+            min-width: 0;
+            color: #71717a;
+            font-size: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .result-link {
+            flex-shrink: 0;
+            color: #18181b;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        /* =========================
+           ERROR
+        ========================= */
+
+        .error-message {
+            display: none;
+            margin-top: 12px;
+            padding: 10px 12px;
+            border: 1px solid #e4e4e7;
+            border-radius: 8px;
+            background: #fafafa;
+            color: #52525b;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .error-message.visible {
+            display: block;
+        }
+
+        /* =========================
+           ANIMATIONS
+        ========================= */
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes pulse {
+            0%,
+            60%,
+            100% {
+                opacity: 0.25;
+                transform: translateY(0);
+            }
+
+            30% {
+                opacity: 1;
+                transform: translateY(-2px);
+            }
+        }
+
+        @keyframes viewportPulse {
+            0%,
+            100% {
+                transform: scale(0.98);
+                opacity: 0.35;
+            }
+
+            50% {
+                transform: scale(1.03);
+                opacity: 0.8;
+            }
+        }
+
+        @keyframes loadingFloat {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @keyframes ringPulse {
+            0%,
+            100% {
+                opacity: 0.75;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes statusPulse {
+            0%,
+            100% {
+                opacity: 0.35;
+                transform: scale(0.85);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes imageAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.985);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .generator-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .result-panel {
+                min-height: 500px;
+            }
+
+            .result-body {
+                min-height: 440px;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .container {
+                width: min(100% - 32px, 1180px);
+            }
+
+            .header-inner {
+                height: 68px;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .logo-mark {
+                width: 30px;
+                height: 30px;
+            }
+
+            .header-actions {
+                gap: 14px;
+            }
+
+            .header-link {
+                font-size: 13px;
+            }
+
+            .generator-section {
+                padding: 55px 0 70px;
+            }
+
+            .generator-header h1 {
+                font-size: 40px;
+                letter-spacing: -1.8px;
+            }
+
+            .prompt-panel {
+                padding: 22px 20px;
+            }
+
+            .prompt-textarea {
+                min-height: 190px;
+            }
+
+            .result-panel {
+                min-height: 400px;
+            }
+
+            .result-body {
+                min-height: 350px;
+                padding: 20px;
+            }
+
+            .result-footer {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .download-button {
+                right: 30px;
+                bottom: 30px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="container header-inner">
+
+        <a href="/" class="logo">
+            <span class="logo-mark">✦</span>
+            <span>Neurox</span>
+        </a>
+
+        <div class="header-actions">
+
+            <a
+                    href="/requests"
+                    class="header-link"
+            >
+                История запросов
+            </a>
+
+            <a
+                    href="/profile"
+                    class="header-link"
+            >
+                Мой профиль
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <section class="generator-section">
+
+        <div class="container">
+
+            <div class="generator-header">
+
+                <div class="generator-label">
+                    <span class="generator-label-dot"></span>
+                    Text to Image
+                </div>
+
+                <h1>
+                    Создайте своё изображение
+                </h1>
+
+                <p>
+                    Опишите словами то, что хотите увидеть.
+                    Neurox передаст ваш запрос искусственному
+                    интеллекту и создаст изображение на его основе.
+                </p>
+
+            </div>
+
+
+            <div class="generator-layout">
+
+                <!-- =========================
+                     PROMPT PANEL
+                ========================= -->
+
+                <div class="panel prompt-panel">
+
+                    <h2 class="panel-title">
+                        Опишите изображение
+                    </h2>
+
+                    <p class="panel-description">
+                        Чем подробнее будет описание, тем больше
+                        деталей сможет учесть модель.
+                    </p>
+
+
+                    <form id="generate-form">
+
+                        <div class="field">
+
+                            <label
+                                    class="field-label"
+                                    for="prompt"
+                            >
+                                Prompt
+                            </label>
+
+
+                            <textarea
+                                    class="prompt-textarea"
+                                    id="prompt"
+                                    name="prompt"
+                                    maxlength="1000"
+                                    placeholder="Например: футуристический город будущего на закате, неоновые здания, летающие автомобили, кинематографичный свет..."
+                                    required
+                            ></textarea>
+
+
+                            <div class="field-footer">
+
+                                <span>
+                                    Опишите сцену, стиль,
+                                    освещение и детали
+                                </span>
+
+                                <span id="counter">
+                                    0 / 1000
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- EXAMPLES -->
+
+                        <div class="examples">
+
+                            <div class="examples-title">
+                                Примеры
+                            </div>
+
+
+                            <div class="example-list">
+
+                                <button
+                                        type="button"
+                                        class="example-button"
+                                        data-prompt="Футуристический город будущего на закате, неоновые здания, летающие автомобили, кинематографичный свет, высокая детализация"
+                                >
+                                    Футуристический город будущего на закате
+                                </button>
+
+
+                                <button
+                                        type="button"
+                                        class="example-button"
+                                        data-prompt="Современный дом в горах, панорамные окна, деревянная терраса, туман между горами, мягкий вечерний свет, реалистичная фотография"
+                                >
+                                    Современный дом в горах
+                                </button>
+
+
+                                <button
+                                        type="button"
+                                        class="example-button"
+                                        data-prompt="Исследователь будущего в технологичном костюме стоит на поверхности Марса, драматическое освещение, красная планета на заднем плане, кинематографичный стиль"
+                                >
+                                    Исследователь на Марсе
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ERROR -->
+
+                        <div
+                                id="error-message"
+                                class="error-message"
+                                role="alert"
+                                aria-live="polite"
+                        ></div>
+
+
+                        <!-- GENERATE -->
+
+                        <button
+                                id="generate-button"
+                                type="submit"
+                                class="generate-button"
+                        >
+
+                            <span class="generate-button-content">
+                                <span>Создать изображение</span>
+                                <span>✦</span>
+                            </span>
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+
+                <!-- =========================
+                     RESULT PANEL
+                ========================= -->
+
+                <div class="panel result-panel">
+
+                    <div class="result-header">
+
+                        <span class="result-title">
+                            Результат
+                        </span>
+
+                        <span
+                                id="result-status"
+                                class="result-status"
+                        >
+
+                            <span class="status-dot"></span>
+
+                            Ожидание запроса
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- VIEWPORT -->
+
+                    <div class="result-body">
+
+                        <!-- EMPTY STATE -->
+
+                        <div
+                                id="result-empty"
+                                class="result-empty"
+                        >
+
+                            <div class="result-empty-icon">
+                                ✦
+                            </div>
+
+
+                            <h2>
+                                Здесь появится изображение
+                            </h2>
+
+
+                            <p>
+                                Напишите описание слева и нажмите
+                                «Создать изображение».
+                            </p>
+
+                        </div>
+
+
+                        <!-- LOADING -->
+
+                        <div
+                                id="loading-state"
+                                class="loading-state"
+                        >
+
+                            <div class="loading-icon">
+
+                                <div class="loading-ring"></div>
+
+                                <div class="loading-center">
+                                    ✦
+                                </div>
+
+                            </div>
+
+
+                            <h2>
+
+                                Создаём изображение
+
+                                <span class="loading-dots">
+
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+
+                                </span>
+
+                            </h2>
+
+
+                            <p id="loading-text">
+                                Подготавливаем запрос...
+                            </p>
+
+                        </div>
+
+
+                        <!-- GENERATED IMAGE -->
+
+                        <img
+                                id="generated-image"
+                                class="generated-image"
+                                src=""
+                                alt="Сгенерированное изображение"
+                        >
+
+
+                        <!-- DOWNLOAD -->
+
+                        <button
+                                id="download-button"
+                                type="button"
+                                class="download-button"
+                        >
+                            Скачать фото
+                        </button>
+
+                    </div>
+
+
+                    <!-- FOOTER -->
+
+                    <div
+                            id="result-footer"
+                            class="result-footer"
+                    >
+
+                        <span
+                                id="result-prompt"
+                                class="result-prompt"
+                        ></span>
+
+
+                        <a
+                                id="result-link"
+                                href="/requests"
+                                class="result-link"
+                        >
+                            История запросов →
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+    /*
+     * =========================
+     * ELEMENTS
+     * =========================
+     */
+
+    const form =
+        document.getElementById("generate-form");
+
+    const prompt =
+        document.getElementById("prompt");
+
+    const counter =
+        document.getElementById("counter");
+
+    const button =
+        document.getElementById("generate-button");
+
+    const emptyState =
+        document.getElementById("result-empty");
+
+    const loadingState =
+        document.getElementById("loading-state");
+
+    const loadingText =
+        document.getElementById("loading-text");
+
+    const generatedImage =
+        document.getElementById("generated-image");
+
+    const downloadButton =
+        document.getElementById("download-button");
+
+    const resultStatus =
+        document.getElementById("result-status");
+
+    const resultFooter =
+        document.getElementById("result-footer");
+
+    const resultPrompt =
+        document.getElementById("result-prompt");
+
+    const errorMessage =
+        document.getElementById("error-message");
+
+    const exampleButtons =
+        document.querySelectorAll(".example-button");
+
+
+    /*
+     * =========================
+     * AUTHENTICATION
+     * =========================
+     *
+     * JWT должен находиться в:
+     *
+     * localStorage:
+     * {
+     *     token: "..."
+     * }
+     *
+     */
+
+    function getAuthToken() {
+
+        const token =
+            localStorage.getItem("neurox_token");
+
+        if (!token) {
+
+            throw new Error(
+                "Токен авторизации не найден. Войдите в аккаунт."
+            );
+
+        }
+
+        return token;
+    }
+
+
+    /*
+     * =========================
+     * STATE
+     * =========================
+     */
+
+    const loadingMessages = [
+        "Подготавливаем запрос...",
+        "Передаём описание искусственному интеллекту...",
+        "Анализируем детали изображения...",
+        "Создаём композицию...",
+        "Подбираем визуальный стиль...",
+        "Добавляем освещение и детали...",
+        "Формируем изображение...",
+        "Обрабатываем результат...",
+        "Почти готово...",
+        "Завершаем генерацию..."
+    ];
+
+    let loadingMessageIndex = 0;
+
+    let loadingMessageInterval = null;
+
+    let loadingTextTimeout = null;
+
+
+    /*
+     * =========================
+     * COUNTER
+     * =========================
+     */
+
+    prompt.addEventListener(
+        "input",
+        function () {
+
+            counter.textContent =
+                `${prompt.value.length} / 1000`;
+
+        }
+    );
+
+
+    /*
+     * =========================
+     * EXAMPLES
+     * =========================
+     */
+
+    exampleButtons.forEach(
+        function (exampleButton) {
+
+            exampleButton.addEventListener(
+                "click",
+                function () {
+
+                    prompt.value =
+                        exampleButton.dataset.prompt;
+
+                    prompt.dispatchEvent(
+                        new Event("input")
+                    );
+
+                    clearError();
+
+                    prompt.focus();
+
+                }
+            );
+
+        }
+    );
+
+
+    /*
+     * =========================
+     * DOWNLOAD IMAGE
+     * =========================
+     */
+
+    downloadButton.addEventListener(
+        "click",
+        function () {
+
+            if (!generatedImage.src) {
+                return;
+            }
+
+            const link =
+                document.createElement("a");
+
+            link.href =
+                generatedImage.src;
+
+            link.download =
+                "neurox-generated-image.png";
+
+            document.body.appendChild(link);
+
+            link.click();
+
+            link.remove();
+
+        }
+    );
+
+
+    /*
+     * =========================
+     * FORM SUBMIT
+     * =========================
+     */
+
+    form.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+
+            /*
+             * Берём текст prompt
+             */
+
+            const promptValue =
+                prompt.value.trim();
+
+
+            /*
+             * Проверяем prompt
+             */
+
+            if (!promptValue) {
+
+                showError(
+                    "Введите описание изображения."
+                );
+
+                prompt.focus();
+
+                return;
+            }
+
+
+            /*
+             * Сбрасываем ошибку
+             */
+
+            clearError();
+
+
+            /*
+             * Включаем loading
+             */
+
+            setLoading(true);
+
+
+            try {
+
+                /*
+                 * =========================
+                 * GET JWT TOKEN
+                 * =========================
+                 */
+
+                const token =
+                    getAuthToken();
+
+
+                /*
+                 * =========================
+                 * API REQUEST
+                 * =========================
+                 *
+                 * POST:
+                 * /api/v1/requests/text-to-image
+                 *
+                 * Authorization:
+                 * Bearer <JWT>
+                 *
+                 * Body:
+                 * {
+                 *     "prompt": "..."
+                 * }
+                 *
+                 */
+
+                const response =
+                    await fetch(
+                        "/api/v1/requests/text-to-image",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json",
+
+                                "Accept":
+                                    "application/json",
+
+                                "Authorization":
+                                    `Bearer ${token}`
+                            },
+
+                            body: JSON.stringify({
+                                prompt: promptValue
+                            })
+                        }
+                    );
+
+
+                /*
+                 * =========================
+                 * TRY PARSE JSON
+                 * =========================
+                 */
+
+                let data = null;
+
+                try {
+
+                    data =
+                        await response.json();
+
+                } catch (_) {
+
+                    data = null;
+
+                }
+
+
+                /*
+                 * =========================
+                 * HTTP ERROR
+                 * =========================
+                 */
+
+                if (!response.ok) {
+
+                    /*
+                     * Если JWT протух или
+                     * сервер не авторизовал
+                     * пользователя.
+                     */
+
+                    if (
+                        response.status === 401
+                    ) {
+
+                        localStorage.removeItem(
+                            "token"
+                        );
+
+                        throw new Error(
+                            "Сессия истекла. Войдите в аккаунт снова."
+                        );
+                    }
+
+
+                    const message =
+                        data?.message ||
+                        data?.error ||
+                        getHttpErrorMessage(
+                            response.status
+                        );
+
+                    throw new Error(message);
+                }
+
+
+                /*
+                 * =========================
+                 * VALIDATE RESPONSE
+                 * =========================
+                 */
+
+                if (
+                    !data ||
+                    !data.image
+                ) {
+
+                    throw new Error(
+                        "Сервер не вернул изображение."
+                    );
+                }
+
+
+                /*
+                 * =========================
+                 * SHOW IMAGE
+                 * =========================
+                 */
+
+                showResult(data);
+
+            } catch (error) {
+
+                console.error(
+                    "Neurox image generation error:",
+                    error
+                );
+
+
+                showError(
+                    error.message ||
+                    "Произошла ошибка при генерации изображения."
+                );
+
+
+                showEmpty();
+
+            } finally {
+
+                /*
+                 * Останавливаем loading
+                 */
+
+                setLoading(false);
+
+            }
+
+        }
+    );
+
+
+    /*
+     * =========================
+     * LOADING
+     * =========================
+     */
+
+    function setLoading(isLoading) {
+
+        button.disabled =
+            isLoading;
+
+
+        if (isLoading) {
+
+            /*
+             * Кнопка
+             */
+
+            button.innerHTML = `
+                <span class="generate-button-content">
+                    <span>Создаём изображение...</span>
+                    <span>✦</span>
+                </span>
+            `;
+
+
+            /*
+             * Скрываем старое изображение
+             */
+
+            generatedImage.style.display =
+                "none";
+
+
+            generatedImage.removeAttribute(
+                "src"
+            );
+
+
+            /*
+             * Скрываем кнопку скачивания
+             */
+
+            downloadButton.style.display =
+                "none";
+
+
+            /*
+             * Скрываем footer
+             */
+
+            resultFooter.classList.remove(
+                "visible"
+            );
+
+
+            /*
+             * Скрываем empty
+             */
+
+            emptyState.style.display =
+                "none";
+
+
+            /*
+             * Показываем loading
+             */
+
+            loadingState.classList.add(
+                "active"
+            );
+
+
+            /*
+             * Статус
+             */
+
+            resultStatus.innerHTML = `
+                <span class="status-dot loading-status-dot"></span>
+                Генерация...
+            `;
+
+
+            /*
+             * Первый текст
+             */
+
+            loadingMessageIndex = 0;
+
+            loadingText.textContent =
+                loadingMessages[
+                    loadingMessageIndex
+                    ];
+
+
+            /*
+             * Очищаем старые таймеры
+             */
+
+            clearInterval(
+                loadingMessageInterval
+            );
+
+            clearTimeout(
+                loadingTextTimeout
+            );
+
+
+            /*
+             * Запускаем смену сообщений
+             */
+
+            loadingMessageInterval =
+                setInterval(
+                    changeLoadingMessage,
+                    2200
+                );
+
+        } else {
+
+            /*
+             * Возвращаем кнопку
+             */
+
+            button.innerHTML = `
+                <span class="generate-button-content">
+                    <span>Создать изображение</span>
+                    <span>✦</span>
+                </span>
+            `;
+
+
+            /*
+             * Останавливаем
+             * смену сообщений
+             */
+
+            clearInterval(
+                loadingMessageInterval
+            );
+
+            clearTimeout(
+                loadingTextTimeout
+            );
+
+            loadingMessageInterval =
+                null;
+
+            loadingTextTimeout =
+                null;
+
+        }
+
+    }
+
+
+    /*
+     * =========================
+     * CHANGE LOADING MESSAGE
+     * =========================
+     */
+
+    function changeLoadingMessage() {
+
+        loadingText.animate(
+            [
+                {
+                    opacity: 1,
+                    transform: "translateY(0)"
+                },
+                {
+                    opacity: 0,
+                    transform: "translateY(4px)"
+                }
+            ],
+            {
+                duration: 180,
+                easing: "ease-out"
+            }
+        );
+
+
+        loadingTextTimeout =
+            setTimeout(
+                function () {
+
+                    loadingMessageIndex++;
+
+
+                    if (
+                        loadingMessageIndex >=
+                        loadingMessages.length
+                    ) {
+
+                        loadingMessageIndex = 0;
+
+                    }
+
+
+                    loadingText.textContent =
+                        loadingMessages[
+                            loadingMessageIndex
+                            ];
+
+
+                    loadingText.animate(
+                        [
+                            {
+                                opacity: 0,
+                                transform:
+                                    "translateY(-4px)"
+                            },
+                            {
+                                opacity: 1,
+                                transform:
+                                    "translateY(0)"
+                            }
+                        ],
+                        {
+                            duration: 300,
+                            easing: "ease-out"
+                        }
+                    );
+
+                },
+                180
+            );
+
+    }
+
+
+    /*
+     * =========================
+     * SHOW RESULT
+     * =========================
+     */
+
+    function showResult(data) {
+
+        /*
+         * Останавливаем loading
+         */
+
+        loadingState.classList.remove(
+            "active"
+        );
+
+
+        /*
+         * Скрываем empty
+         */
+
+        emptyState.style.display =
+            "none";
+
+
+        /*
+         * URL изображения
+         *
+         * API должен вернуть:
+         *
+         * {
+         *     "id": 1,
+         *     "image": "...",
+         *     "prompt": "..."
+         * }
+         *
+         */
+
+        generatedImage.src =
+            data.image;
+
+
+        /*
+         * Alt
+         */
+
+        generatedImage.alt =
+            data.prompt ||
+            "Сгенерированное изображение";
+
+
+        /*
+         * Показываем изображение
+         */
+
+        generatedImage.style.display =
+            "block";
+
+
+        /*
+         * Показываем кнопку скачивания
+         */
+
+        downloadButton.style.display =
+            "block";
+
+
+        /*
+         * Показываем prompt
+         */
+
+        resultPrompt.textContent =
+            data.prompt ||
+            prompt.value.trim();
+
+
+        /*
+         * Показываем footer
+         */
+
+        resultFooter.classList.add(
+            "visible"
+        );
+
+
+        /*
+         * Статус
+         */
+
+        resultStatus.innerHTML = `
+            <span
+                class="status-dot"
+                style="background: #18181b;"
+            ></span>
+            Готово
+        `;
+
+
+        /*
+         * Плавно прокручиваем к результату
+         */
+
+        generatedImage.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest"
+        });
+
+    }
+
+
+    /*
+     * =========================
+     * EMPTY
+     * =========================
+     */
+
+    function showEmpty() {
+
+        /*
+         * Убираем loading
+         */
+
+        loadingState.classList.remove(
+            "active"
+        );
+
+
+        /*
+         * Убираем изображение
+         */
+
+        generatedImage.style.display =
+            "none";
+
+        generatedImage.removeAttribute(
+            "src"
+        );
+
+
+        /*
+         * Убираем кнопку скачивания
+         */
+
+        downloadButton.style.display =
+            "none";
+
+
+        /*
+         * Показываем empty
+         */
+
+        emptyState.style.display =
+            "block";
+
+
+        /*
+         * Footer
+         */
+
+        resultFooter.classList.remove(
+            "visible"
+        );
+
+
+        /*
+         * Статус
+         */
+
+        resultStatus.innerHTML = `
+            <span class="status-dot"></span>
+            Ожидание запроса
+        `;
+
+    }
+
+
+    /*
+     * =========================
+     * ERROR
+     * =========================
+     */
+
+    function showError(message) {
+
+        errorMessage.textContent =
+            message;
+
+        errorMessage.classList.add(
+            "visible"
+        );
+
+    }
+
+
+    function clearError() {
+
+        errorMessage.textContent =
+            "";
+
+        errorMessage.classList.remove(
+            "visible"
+        );
+
+    }
+
+
+    /*
+     * =========================
+     * HTTP ERRORS
+     * =========================
+     */
+
+    function getHttpErrorMessage(status) {
+
+        switch (status) {
+
+            case 400:
+                return "Некорректный запрос.";
+
+            case 401:
+                return "Необходимо авторизоваться.";
+
+            case 404:
+                return "API endpoint не найден.";
+
+            case 500:
+                return "Ошибка сервера при генерации изображения.";
+
+            default:
+                return `Ошибка сервера (${status}).`;
+
+        }
+
+    }
+</script>
+
+</body>
+</html>

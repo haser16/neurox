@@ -9,10 +9,10 @@ import (
 
 func (s *UsersService) AuthenticateUser(
 	ctx context.Context,
-	username string,
+	email string,
 	password string,
 ) (string, error) {
-	hashPassword, userID, err := s.usersRepository.GetPasswordByUsername(ctx, username)
+	hashPassword, userID, err := s.usersRepository.GetPasswordByEmail(ctx, email)
 	if err != nil {
 		return "", fmt.Errorf("failed to get user by `username`: %w", err)
 	}

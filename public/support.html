@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Поддержка — Neurox</title>
+
+    <meta
+            name="description"
+            content="Центр поддержки Neurox. Ответы на часто задаваемые вопросы и связь с нашей командой."
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+        }
+
+        body {
+            background: #f4f4f5;
+            color: #18181b;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input,
+        textarea,
+        select {
+            font-family: inherit;
+        }
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+            height: 76px;
+
+            background: rgba(255, 255, 255, 0.94);
+            border-bottom: 1px solid #e4e4e7;
+
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-inner {
+            width: min(1180px, calc(100% - 48px));
+            height: 100%;
+            margin: 0 auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            font-size: 21px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-mark {
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 9px;
+            background: #18181b;
+            color: #ffffff;
+
+            font-size: 18px;
+        }
+
+        .back-link {
+            color: #71717a;
+            font-size: 14px;
+
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: #18181b;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            flex: 1;
+
+            padding: 65px 20px 90px;
+        }
+
+        .content-wrapper {
+            width: min(1050px, 100%);
+            margin: 0 auto;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .page-header {
+            margin-bottom: 42px;
+            text-align: center;
+        }
+
+        .page-label {
+            display: inline-flex;
+            align-items: center;
+
+            margin-bottom: 16px;
+            padding: 7px 11px;
+
+            border-radius: 999px;
+            background: #e4e4e7;
+
+            color: #52525b;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+
+        .page-header h1 {
+            margin: 0 0 15px;
+
+            font-size: 42px;
+            line-height: 1.15;
+            letter-spacing: -1.2px;
+        }
+
+        .page-header p {
+            max-width: 650px;
+
+            margin: 0 auto;
+
+            color: #71717a;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        /* =========================
+           SUPPORT CARDS
+        ========================= */
+
+        .support-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+
+            margin-bottom: 55px;
+        }
+
+        .support-card {
+            padding: 25px;
+
+            background: #ffffff;
+            border: 1px solid #e4e4e7;
+            border-radius: 12px;
+
+            transition:
+                    transform 0.2s ease,
+                    box-shadow 0.2s ease;
+        }
+
+        .support-card:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                    0 15px 40px rgba(24, 24, 27, 0.06);
+        }
+
+        .support-icon {
+            width: 44px;
+            height: 44px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 18px;
+
+            border-radius: 10px;
+            background: #f4f4f5;
+
+            font-size: 20px;
+        }
+
+        .support-card h3 {
+            margin: 0 0 9px;
+
+            font-size: 16px;
+        }
+
+        .support-card p {
+            margin: 0 0 15px;
+
+            color: #71717a;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .support-card a {
+            color: #18181b;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .support-card a:hover {
+            text-decoration: underline;
+        }
+
+        /* =========================
+           SECTION TITLE
+        ========================= */
+
+        .section-title {
+            margin-bottom: 20px;
+        }
+
+        .section-title h2 {
+            margin: 0 0 7px;
+
+            font-size: 24px;
+            letter-spacing: -0.5px;
+        }
+
+        .section-title p {
+            margin: 0;
+
+            color: #71717a;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* =========================
+           FAQ
+        ========================= */
+
+        .faq {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            margin-bottom: 55px;
+        }
+
+        .faq-item {
+            background: #ffffff;
+            border: 1px solid #e4e4e7;
+            border-radius: 10px;
+
+            overflow: hidden;
+        }
+
+        .faq-item summary {
+            padding: 19px 21px;
+
+            cursor: pointer;
+
+            color: #27272a;
+            font-size: 14px;
+            font-weight: 600;
+
+            list-style: none;
+        }
+
+        .faq-item summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .faq-item summary::after {
+            content: "+";
+
+            float: right;
+
+            color: #a1a1aa;
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        .faq-item[open] summary::after {
+            content: "−";
+        }
+
+        .faq-answer {
+            padding: 0 21px 20px;
+
+            color: #71717a;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .faq-answer p {
+            margin: 0 0 10px;
+        }
+
+        .faq-answer p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* =========================
+           CONTACT FORM
+        ========================= */
+
+        .contact-section {
+            display: grid;
+            grid-template-columns: 0.85fr 1.15fr;
+            gap: 20px;
+
+            margin-bottom: 50px;
+        }
+
+        .contact-info,
+        .contact-form {
+            padding: 30px;
+
+            background: #ffffff;
+            border: 1px solid #e4e4e7;
+            border-radius: 14px;
+        }
+
+        .contact-info h2,
+        .contact-form h2 {
+            margin: 0 0 10px;
+
+            font-size: 21px;
+            letter-spacing: -0.3px;
+        }
+
+        .contact-info > p,
+        .contact-form > p {
+            margin: 0 0 25px;
+
+            color: #71717a;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+
+            margin-top: 18px;
+        }
+
+        .contact-detail-icon {
+            width: 36px;
+            height: 36px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 8px;
+            background: #f4f4f5;
+
+            font-size: 15px;
+        }
+
+        .contact-detail-content strong {
+            display: block;
+
+            margin-bottom: 4px;
+
+            font-size: 13px;
+        }
+
+        .contact-detail-content span,
+        .contact-detail-content a {
+            color: #71717a;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .contact-detail-content a:hover {
+            color: #18181b;
+            text-decoration: underline;
+        }
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #27272a;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .input,
+        .textarea,
+        .select {
+            width: 100%;
+
+            padding: 12px 13px;
+
+            border: 1px solid #d4d4d8;
+            border-radius: 8px;
+
+            background: #ffffff;
+            color: #18181b;
+
+            font-size: 13px;
+
+            outline: none;
+
+            transition:
+                    border-color 0.2s ease,
+                    box-shadow 0.2s ease;
+        }
+
+        .input,
+        .select {
+            height: 46px;
+        }
+
+        .textarea {
+            min-height: 135px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .input::placeholder,
+        .textarea::placeholder {
+            color: #a1a1aa;
+        }
+
+        .input:focus,
+        .textarea:focus,
+        .select:focus {
+            border-color: #18181b;
+
+            box-shadow:
+                    0 0 0 3px rgba(24, 24, 27, 0.08);
+        }
+
+        .submit-button {
+            width: 100%;
+            height: 47px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 0;
+            border-radius: 8px;
+
+            background: #18181b;
+            color: #ffffff;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition:
+                    background-color 0.2s ease,
+                    transform 0.2s ease;
+        }
+
+        .submit-button:hover {
+            background: #27272a;
+            transform: translateY(-1px);
+        }
+
+        .submit-button:active {
+            transform: translateY(0);
+        }
+
+        .form-note {
+            margin-top: 12px;
+
+            color: #a1a1aa;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+            padding: 25px 20px;
+
+            border-top: 1px solid #e4e4e7;
+            background: #fafafa;
+
+            text-align: center;
+        }
+
+        .footer p {
+            margin: 0;
+
+            color: #a1a1aa;
+            font-size: 11px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 18px;
+
+            margin-top: 9px;
+        }
+
+        .footer-links a {
+            color: #a1a1aa;
+            font-size: 11px;
+        }
+
+        .footer-links a:hover {
+            color: #18181b;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 850px) {
+
+            .support-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .header {
+                height: 68px;
+            }
+
+            .header-inner {
+                width: calc(100% - 32px);
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .logo-mark {
+                width: 30px;
+                height: 30px;
+            }
+
+            .main {
+                padding: 40px 14px 60px;
+            }
+
+            .page-header h1 {
+                font-size: 32px;
+            }
+
+            .page-header p {
+                font-size: 14px;
+            }
+
+            .support-card {
+                padding: 22px;
+            }
+
+            .contact-info,
+            .contact-form {
+                padding: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <header class="header">
+
+        <div class="header-inner">
+
+            <a href="/" class="logo">
+
+                <span class="logo-mark">
+                    ✦
+                </span>
+
+                <span>
+                    Neurox
+                </span>
+
+            </a>
+
+            <a href="/" class="back-link">
+                ← На главную
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+
+    <main class="main">
+
+        <div class="content-wrapper">
+
+            <!-- =========================
+                 PAGE HEADER
+            ========================= -->
+
+            <div class="page-header">
+
+                <div class="page-label">
+                    Центр поддержки
+                </div>
+
+                <h1>
+                    Чем можем помочь?
+                </h1>
+
+                <p>
+                    Найдите ответ на свой вопрос в разделе FAQ
+                    или свяжитесь с нашей командой поддержки.
+                    Мы постараемся помочь как можно быстрее.
+                </p>
+
+            </div>
+
+
+            <!-- =========================
+                 SUPPORT OPTIONS
+            ========================= -->
+
+            <div class="support-grid">
+
+                <div class="support-card">
+
+                    <div class="support-icon">
+                        ?
+                    </div>
+
+                    <h3>
+                        Частые вопросы
+                    </h3>
+
+                    <p>
+                        Ответы на самые популярные вопросы
+                        о работе Neurox.
+                    </p>
+
+                    <a href="#faq">
+                        Посмотреть FAQ →
+                    </a>
+
+                </div>
+
+
+                <div class="support-card">
+
+                    <div class="support-icon">
+                        @
+                    </div>
+
+                    <h3>
+                        Email поддержки
+                    </h3>
+
+                    <p>
+                        Напишите нам напрямую,
+                        если не нашли ответ.
+                    </p>
+
+                    <a href="mailto:support@neurox.example">
+                        support@neurox.example
+                    </a>
+
+                </div>
+
+
+                <div class="support-card">
+
+                    <div class="support-icon">
+                        →
+                    </div>
+
+                    <h3>
+                        Сообщить о проблеме
+                    </h3>
+
+                    <p>
+                        Расскажите о технической проблеме
+                        через форму обратной связи.
+                    </p>
+
+                    <a href="#contact">
+                        Отправить сообщение →
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 FAQ
+            ========================= -->
+
+            <div id="faq">
+
+                <div class="section-title">
+
+                    <h2>
+                        Часто задаваемые вопросы
+                    </h2>
+
+                    <p>
+                        Возможно, ответ на ваш вопрос уже есть здесь.
+                    </p>
+
+                </div>
+
+
+                <div class="faq">
+
+                    <details class="faq-item">
+
+                        <summary>
+                            Что такое Neurox?
+                        </summary>
+
+                        <div class="faq-answer">
+
+                            <p>
+                                Neurox — сервис для создания изображений
+                                с использованием технологий искусственного
+                                интеллекта.
+                            </p>
+
+                            <p>
+                                Вы можете описать желаемое изображение
+                                с помощью текстового запроса, после чего
+                                Neurox обработает запрос и создаст результат.
+                            </p>
+
+                        </div>
+
+                    </details>
+
+
+                    <details class="faq-item">
+
+                        <summary>
+                            Как создать аккаунт?
+                        </summary>
+
+                        <div class="faq-answer">
+
+                            <p>
+                                Перейдите на страницу регистрации,
+                                укажите username, email, пароль
+                                и при необходимости номер телефона.
+                            </p>
+
+                            <p>
+                                После регистрации может потребоваться
+                                подтверждение электронной почты.
+                            </p>
+
+                        </div>
+
+                    </details>
+
+
+                    <details class="faq-item">
+
+                        <summary>
+                            Я забыл пароль. Что делать?
+                        </summary>
+
+                        <div class="faq-answer">
+
+                            <p>
+                                Перейдите на страницу восстановления пароля
+                                и укажите email, связанный с вашим аккаунтом.
+                            </p>
+
+                            <p>
+                                После этого следуйте инструкциям,
+                                которые будут отправлены на вашу почту.
+                            </p>
+
+                            <p>
+                                Если письмо не пришло, проверьте папку
+                                «Спам» или обратитесь в службу поддержки.
+                            </p>
+
+                        </div>
+
+                    </details>
+
+
+                    <details class="faq-item">
+
+                        <summary>
+                            Почему я не могу войти в аккаунт?
+                        </summary>
+
+                        <div class="faq-answer">
+
+                            <p>
+                                Проверьте правильность username и пароля.
+                            </p>
+
+                            <p>
+                                Если вы недавно зарегистрировались,
+                                убедитесь, что ваш email был подтвержден,
+                                если подтверждение требуется.
+                            </p>
+
+                            <p>
+                                Если проблема сохраняется, обратитесь
+                                в службу поддержки.
+                            </p>
+
+                        </div>
+
+                    </details>
+
+
+                    <details class="faq-item">
+
+                        <summary>
+                            Почему изображение получилось не таким,
+                            как я ожидал?
+                        </summary>
+
+                        <div class="faq-answer">
+
+                            <p>
+                                Результат зависит от вашего текстового
+                                запроса и используемой модели искусственного
+                                интеллекта.
+                            </p>
+
+                            <p>
+                                Попробуйте сделать prompt более подробным:
+                                укажите стиль, композицию, объекты,
+                                освещение, цвета и другие важные детали.
+                            </p>
+
+                        </div>
+
+                    </details>
+
+
+                    <details class="faq-item">
+
+                        <summary>
+                            Можно ли использовать созданные изображения
+                            в коммерческих целях?
+                        </summary>
+
+                        <div class="faq-answer">
+
+                            <p>
+                                Возможность коммерческого использования
+                                зависит от законодательства, условий Neurox
+                                и условий используемых AI-моделей или
+                                сторонних сервисов.
+                            </p>
+
+                            <p>
+                                Перед коммерческим использованием самостоятельно
+                                убедитесь, что у вас есть необходимые права
+                                на соответствующий результат.
+                            </p>
+
+                        </div>
+
+                    </details>
+
+
+                    <details class="faq-item">
+
+                        <summary>
+                            Что делать, если я обнаружил ошибку?
+                        </summary>
+
+                        <div class="faq-answer">
+
+                            <p>
+                                Опишите проблему через форму обратной связи
+                                ниже.
+                            </p>
+
+                            <p>
+                                Желательно указать, что именно произошло,
+                                какие действия привели к ошибке и,
+                                если возможно, приложить дополнительную
+                                информацию.
+                            </p>
+
+                        </div>
+
+                    </details>
+
+
+                    <details class="faq-item">
+
+                        <summary>
+                            Как удалить аккаунт?
+                        </summary>
+
+                        <div class="faq-answer">
+
+                            <p>
+                                Если в вашем аккаунте доступна функция
+                                удаления, вы можете воспользоваться ей
+                                в настройках профиля.
+                            </p>
+
+                            <p>
+                                Также можно обратиться в службу поддержки
+                                с запросом на удаление аккаунта.
+                            </p>
+
+                        </div>
+
+                    </details>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 CONTACT
+            ========================= -->
+
+            <div id="contact">
+
+                <div class="section-title">
+
+                    <h2>
+                        Связаться с поддержкой
+                    </h2>
+
+                    <p>
+                        Не нашли ответа? Напишите нам,
+                        и мы постараемся разобраться с проблемой.
+                    </p>
+
+                </div>
+
+
+                <div class="contact-section">
+
+                    <!-- CONTACT INFO -->
+
+                    <div class="contact-info">
+
+                        <h2>
+                            Мы на связи
+                        </h2>
+
+                        <p>
+                            Для большинства вопросов достаточно
+                            отправить сообщение через форму.
+                        </p>
+
+
+                        <div class="contact-detail">
+
+                            <div class="contact-detail-icon">
+                                @
+                            </div>
+
+                            <div class="contact-detail-content">
+
+                                <strong>
+                                    Email
+                                </strong>
+
+                                <a href="mailto:support@neurox.example">
+                                    support@neurox.example
+                                </a>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="contact-detail">
+
+                            <div class="contact-detail-icon">
+                                ?
+                            </div>
+
+                            <div class="contact-detail-content">
+
+                                <strong>
+                                    Общие вопросы
+                                </strong>
+
+                                <span>
+                                    Аккаунт, регистрация,
+                                    восстановление доступа
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="contact-detail">
+
+                            <div class="contact-detail-icon">
+                                ⚙
+                            </div>
+
+                            <div class="contact-detail-content">
+
+                                <strong>
+                                    Технические проблемы
+                                </strong>
+
+                                <span>
+                                    Ошибки, генерация изображений,
+                                    проблемы с API
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CONTACT FORM -->
+
+                    <div class="contact-form">
+
+                        <h2>
+                            Отправить сообщение
+                        </h2>
+
+                        <p>
+                            Заполните форму, и мы получим ваше обращение.
+                        </p>
+
+
+                        <form
+                                action="/support"
+                                method="POST"
+                        >
+
+                            <!-- Name -->
+
+                            <div class="form-group">
+
+                                <label
+                                        class="form-label"
+                                        for="name"
+                                >
+                                    Имя
+                                </label>
+
+                                <input
+                                        class="input"
+                                        id="name"
+                                        name="name"
+                                        type="text"
+                                        placeholder="Ваше имя"
+                                        maxlength="100"
+                                >
+
+                            </div>
+
+
+                            <!-- Email -->
+
+                            <div class="form-group">
+
+                                <label
+                                        class="form-label"
+                                        for="email"
+                                >
+                                    Email
+                                </label>
+
+                                <input
+                                        class="input"
+                                        id="email"
+                                        name="email"
+                                        type="email"
+                                        placeholder="you@example.com"
+                                        autocomplete="email"
+                                        required
+                                >
+
+                            </div>
+
+
+                            <!-- Category -->
+
+                            <div class="form-group">
+
+                                <label
+                                        class="form-label"
+                                        for="category"
+                                >
+                                    Тема обращения
+                                </label>
+
+                                <select
+                                        class="select"
+                                        id="category"
+                                        name="category"
+                                        required
+                                >
+
+                                    <option
+                                            value=""
+                                            selected
+                                            disabled
+                                    >
+                                        Выберите тему
+                                    </option>
+
+                                    <option value="account">
+                                        Аккаунт
+                                    </option>
+
+                                    <option value="login">
+                                        Не могу войти
+                                    </option>
+
+                                    <option value="generation">
+                                        Генерация изображений
+                                    </option>
+
+                                    <option value="technical">
+                                        Техническая проблема
+                                    </option>
+
+                                    <option value="api">
+                                        API
+                                    </option>
+
+                                    <option value="privacy">
+                                        Конфиденциальность
+                                    </option>
+
+                                    <option value="other">
+                                        Другое
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Message -->
+
+                            <div class="form-group">
+
+                                <label
+                                        class="form-label"
+                                        for="message"
+                                >
+                                    Сообщение
+                                </label>
+
+                                <textarea
+                                        class="textarea"
+                                        id="message"
+                                        name="message"
+                                        placeholder="Опишите вашу проблему или вопрос..."
+                                        minlength="10"
+                                        maxlength="5000"
+                                        required
+                                ></textarea>
+
+                            </div>
+
+
+                            <!-- Submit -->
+
+                            <button
+                                    type="submit"
+                                    class="submit-button"
+                            >
+                                Отправить сообщение
+                            </button>
+
+
+                            <div class="form-note">
+                                Не отправляйте через форму пароли,
+                                API-ключи или другую конфиденциальную
+                                информацию.
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
+    <footer class="footer">
+
+        <p>
+            © 2026 Neurox. Все права защищены.
+        </p>
+
+        <div class="footer-links">
+
+            <a href="/">
+                Главная
+            </a>
+
+            <a href="/login">
+                Вход
+            </a>
+
+            <a href="/register">
+                Регистрация
+            </a>
+
+            <a href="/privacy">
+                Конфиденциальность
+            </a>
+
+            <a href="/terms">
+                Условия использования
+            </a>
+
+        </div>
+
+    </footer>
+
+</div>
+
+</body>
+</html>

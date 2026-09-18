@@ -5,9 +5,9 @@ import (
 	"fmt"
 )
 
-func (r *UsersRepository) GetPasswordByUsername(
+func (r *UsersRepository) GetPasswordByEmail(
 	ctx context.Context,
-	username string,
+	email string,
 ) (string, int64, error) {
 	ctx, cancel := context.WithTimeout(ctx, r.pool.OperationTimeOut())
 	defer cancel()
@@ -15,10 +15,10 @@ func (r *UsersRepository) GetPasswordByUsername(
 	query := `
         SELECT id, password
         FROM neurox.users
-        WHERE username = $1
+        WHERE email = $1
     `
 
-	row := r.pool.QueryRow(ctx, query, username)
+	row := r.pool.QueryRow(ctx, query, email)
 
 	var (
 		password string

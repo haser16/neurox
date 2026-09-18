@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Neurox — Изменение данных</title>
+
+    <meta
+            name="description"
+            content="Изменение данных аккаунта Neurox."
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #ffffff;
+            color: #18181b;
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.5;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+        .container {
+            width: min(1180px, calc(100% - 48px));
+            margin: 0 auto;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+
+            background: rgba(255, 255, 255, 0.92);
+            border-bottom: 1px solid #f4f4f5;
+
+            backdrop-filter: blur(12px);
+        }
+
+        .header-inner {
+            height: 76px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 30px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            font-size: 21px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-mark {
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 9px;
+
+            background: #18181b;
+            color: #ffffff;
+
+            font-size: 18px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .header-link {
+            color: #52525b;
+            font-size: 14px;
+
+            transition: color 0.2s ease;
+        }
+
+        .header-link:hover {
+            color: #18181b;
+        }
+
+        /* =========================
+           EDIT PROFILE
+        ========================= */
+
+        .edit-section {
+            padding: 80px 0 100px;
+
+            background:
+                    radial-gradient(
+                            circle at 50% 0%,
+                            #fafafa 0,
+                            #ffffff 50%
+                    );
+        }
+
+        .edit-header {
+            max-width: 700px;
+            margin-bottom: 40px;
+        }
+
+        .edit-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            padding: 7px 12px;
+            margin-bottom: 20px;
+
+            border: 1px solid #e4e4e7;
+            border-radius: 999px;
+
+            background: #fafafa;
+            color: #52525b;
+
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .edit-label-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #18181b;
+        }
+
+        .edit-header h1 {
+            margin: 0;
+
+            font-size: clamp(40px, 5vw, 58px);
+            line-height: 1.05;
+            letter-spacing: -2.5px;
+        }
+
+        .edit-header p {
+            max-width: 620px;
+
+            margin: 18px 0 0;
+
+            color: #71717a;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        /* =========================
+           FORM CARD
+        ========================= */
+
+        .edit-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 760px) 320px;
+
+            gap: 20px;
+            align-items: start;
+        }
+
+        .form-card {
+            padding: 32px;
+
+            border: 1px solid #e4e4e7;
+            border-radius: 14px;
+
+            background: #ffffff;
+        }
+
+        .card-title {
+            margin: 0;
+
+            font-size: 20px;
+            letter-spacing: -0.4px;
+        }
+
+        .card-description {
+            margin: 8px 0 28px;
+
+            color: #71717a;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .field-label {
+            color: #18181b;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .field-description {
+            margin-top: -2px;
+
+            color: #a1a1aa;
+            font-size: 12px;
+        }
+
+        .input {
+            width: 100%;
+            height: 46px;
+
+            padding: 0 14px;
+
+            border: 1px solid #d4d4d8;
+            border-radius: 8px;
+
+            outline: none;
+
+            background: #ffffff;
+            color: #18181b;
+
+            font-size: 14px;
+
+            transition:
+                    border-color 0.2s ease,
+                    box-shadow 0.2s ease;
+        }
+
+        .input::placeholder {
+            color: #a1a1aa;
+        }
+
+        .input:hover {
+            border-color: #a1a1aa;
+        }
+
+        .input:focus {
+            border-color: #18181b;
+
+            box-shadow:
+                    0 0 0 3px rgba(24, 24, 27, 0.08);
+        }
+
+        .input-error {
+            border-color: #a1a1aa;
+        }
+
+        .error-message {
+            display: none;
+
+            color: #52525b;
+            font-size: 12px;
+        }
+
+        .field.has-error .error-message {
+            display: block;
+        }
+
+        /* =========================
+           FORM ACTIONS
+        ========================= */
+
+        .form-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            padding-top: 8px;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-height: 44px;
+            padding: 0 20px;
+
+            border-radius: 8px;
+            border: 1px solid transparent;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition:
+                    background-color 0.2s ease,
+                    border-color 0.2s ease,
+                    transform 0.2s ease;
+        }
+
+        .button:hover {
+            transform: translateY(-1px);
+        }
+
+        .button-primary {
+            background: #18181b;
+            color: #ffffff;
+        }
+
+        .button-primary:hover {
+            background: #27272a;
+        }
+
+        .button-secondary {
+            background: #ffffff;
+            border-color: #e4e4e7;
+            color: #18181b;
+        }
+
+        .button-secondary:hover {
+            background: #fafafa;
+        }
+
+        /* =========================
+           SECURITY CARD
+        ========================= */
+
+        .security-card {
+            padding: 28px;
+
+            border: 1px solid #e4e4e7;
+            border-radius: 14px;
+
+            background: #fafafa;
+        }
+
+        .security-icon {
+            width: 40px;
+            height: 40px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 18px;
+
+            border-radius: 10px;
+
+            background: #18181b;
+            color: #ffffff;
+
+            font-size: 17px;
+        }
+
+        .security-card h2 {
+            margin: 0 0 10px;
+
+            font-size: 17px;
+            letter-spacing: -0.3px;
+        }
+
+        .security-card p {
+            margin: 0;
+
+            color: #71717a;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .security-link {
+            display: inline-flex;
+
+            margin-top: 18px;
+
+            color: #18181b;
+            font-size: 13px;
+            font-weight: 600;
+
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+            padding: 65px 0 30px;
+
+            border-top: 1px solid #e4e4e7;
+
+            background: #fafafa;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr repeat(3, 1fr);
+
+            gap: 50px;
+
+            padding-bottom: 55px;
+        }
+
+        .footer-brand {
+            max-width: 300px;
+        }
+
+        .footer-brand p {
+            margin: 18px 0 0;
+
+            color: #71717a;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .footer-column h4 {
+            margin: 0 0 18px;
+
+            font-size: 13px;
+        }
+
+        .footer-column a {
+            display: block;
+
+            margin-bottom: 11px;
+
+            color: #71717a;
+            font-size: 13px;
+        }
+
+        .footer-column a:hover {
+            color: #18181b;
+        }
+
+        .footer-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding-top: 25px;
+
+            border-top: 1px solid #e4e4e7;
+        }
+
+        .copyright {
+            color: #a1a1aa;
+            font-size: 12px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            color: #a1a1aa;
+            font-size: 12px;
+        }
+
+        .footer-links a:hover {
+            color: #18181b;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .edit-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .security-card {
+                width: 100%;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .container {
+                width: min(100% - 32px, 1180px);
+            }
+
+            .header-inner {
+                height: 68px;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .logo-mark {
+                width: 30px;
+                height: 30px;
+            }
+
+            .header-actions {
+                gap: 14px;
+            }
+
+            .header-link {
+                font-size: 13px;
+            }
+
+            .edit-section {
+                padding: 60px 0 75px;
+            }
+
+            .edit-header h1 {
+                font-size: 40px;
+                letter-spacing: -1.8px;
+            }
+
+            .form-card,
+            .security-card {
+                padding: 24px 20px;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+                align-items: stretch;
+            }
+
+            .form-actions .button {
+                width: 100%;
+            }
+
+            .footer {
+                padding-top: 50px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 35px 25px;
+            }
+
+            .footer-brand {
+                grid-column: 1 / -1;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="container header-inner">
+
+        <a href="/" class="logo">
+            <span class="logo-mark">✦</span>
+            <span>Neurox</span>
+        </a>
+
+        <div class="header-actions">
+
+            <a href="/profile" class="header-link">
+                ← Мой профиль
+            </a>
+
+            <a href="/logout" class="header-link">
+                Выйти
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <section class="edit-section">
+
+        <div class="container">
+
+            <div class="edit-header">
+
+                <div class="edit-label">
+                    <span class="edit-label-dot"></span>
+                    Настройки аккаунта
+                </div>
+
+                <h1>
+                    Изменение данных
+                </h1>
+
+                <p>
+                    Измените данные своего аккаунта.
+                    После сохранения новые данные будут
+                    использоваться в вашем профиле.
+                </p>
+
+            </div>
+
+
+            <div class="edit-layout">
+
+                <!-- =========================
+                     FORM
+                ========================= -->
+
+                <div class="form-card">
+
+                    <h2 class="card-title">
+                        Данные аккаунта
+                    </h2>
+
+                    <p class="card-description">
+                        Заполните только те поля, которые хотите изменить.
+                    </p>
+
+
+                    <form
+                            class="form"
+                            action="/profile/edit"
+                            method="POST"
+                    >
+
+                        <!-- Username -->
+
+                        <div class="field">
+
+                            <label
+                                    class="field-label"
+                                    for="username"
+                            >
+                                Username
+                            </label>
+
+                            <input
+                                    class="input"
+                                    type="text"
+                                    id="username"
+                                    name="username"
+                                    value="username"
+                                    placeholder="Введите username"
+                                    minlength="2"
+                                    maxlength="100"
+                                    required
+                                    autocomplete="username"
+                            >
+
+                            <span class="field-description">
+                                От 2 до 100 символов.
+                            </span>
+
+                            <span class="error-message">
+                                Проверьте введённый username.
+                            </span>
+
+                        </div>
+
+
+                        <!-- Email -->
+
+                        <div class="field">
+
+                            <label
+                                    class="field-label"
+                                    for="email"
+                            >
+                                Email
+                            </label>
+
+                            <input
+                                    class="input"
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    value="username@example.com"
+                                    placeholder="Введите email"
+                                    maxlength="100"
+                                    required
+                                    autocomplete="email"
+                            >
+
+                            <span class="field-description">
+                                Используйте действующий адрес электронной почты.
+                            </span>
+
+                            <span class="error-message">
+                                Введите корректный email.
+                            </span>
+
+                        </div>
+
+
+                        <!-- Phone -->
+
+                        <div class="field">
+
+                            <label
+                                    class="field-label"
+                                    for="phone"
+                            >
+                                Телефон
+                            </label>
+
+                            <input
+                                    class="input"
+                                    type="tel"
+                                    id="phone"
+                                    name="phone"
+                                    value="+375291234567"
+                                    placeholder="+375291234567"
+                                    maxlength="15"
+                                    pattern="^\+[0-9]+$"
+                                    autocomplete="tel"
+                            >
+
+                            <span class="field-description">
+                                Необязательное поле. Номер должен начинаться с «+»
+                                и содержать только цифры.
+                            </span>
+
+                            <span class="error-message">
+                                Введите корректный номер телефона.
+                            </span>
+
+                        </div>
+
+
+                        <!-- Actions -->
+
+                        <div class="form-actions">
+
+                            <a
+                                    href="/profile"
+                                    class="button button-secondary"
+                            >
+                                Отмена
+                            </a>
+
+                            <button
+                                    type="submit"
+                                    class="button button-primary"
+                            >
+                                Сохранить изменения
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+
+                <!-- =========================
+                     SECURITY
+                ========================= -->
+
+                <aside class="security-card">
+
+                    <div class="security-icon">
+                        🔒
+                    </div>
+
+                    <h2>
+                        Безопасность
+                    </h2>
+
+                    <p>
+                        Для изменения пароля используется
+                        отдельная страница. Это помогает
+                        безопасно разделить изменение
+                        персональных данных и данных авторизации.
+                    </p>
+
+                    <a
+                            href="/forgot-password"
+                            class="security-link"
+                    >
+                        Изменить пароль →
+                    </a>
+
+                </aside>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="container">
+
+        <div class="footer-grid">
+
+            <div class="footer-brand">
+
+                <a href="/" class="logo">
+                    <span class="logo-mark">✦</span>
+                    <span>Neurox</span>
+                </a>
+
+                <p>
+                    Платформа для создания изображений
+                    с помощью искусственного интеллекта.
+                    Превращайте текстовые идеи в визуальные
+                    образы.
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Neurox
+                </h4>
+
+                <a href="/">
+                    Главная
+                </a>
+
+                <a href="/#features">
+                    Возможности
+                </a>
+
+                <a href="/#how-it-works">
+                    Как это работает
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Аккаунт
+                </h4>
+
+                <a href="/profile">
+                    Мой профиль
+                </a>
+
+                <a href="/requests">
+                    История запросов
+                </a>
+
+                <a href="/forgot-password">
+                    Изменить пароль
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Помощь
+                </h4>
+
+                <a href="/support">
+                    Поддержка
+                </a>
+
+                <a href="/privacy">
+                    Конфиденциальность
+                </a>
+
+                <a href="/terms">
+                    Условия использования
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <div class="copyright">
+                © 2026 Neurox. Все права защищены.
+            </div>
+
+            <div class="footer-links">
+
+                <a href="/privacy">
+                    Конфиденциальность
+                </a>
+
+                <a href="/terms">
+                    Условия использования
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>
+
+</body>
+</html>

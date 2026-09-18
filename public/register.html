@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Регистрация — Neurox</title>
+
+    <meta
+            name="description"
+            content="Создайте аккаунт Neurox и начните создавать изображения с помощью ИИ."
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+        }
+
+        body {
+            background: #f4f4f5;
+            color: #18181b;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            height: 76px;
+            background: rgba(255, 255, 255, 0.94);
+            border-bottom: 1px solid #e4e4e7;
+        }
+
+        .header-inner {
+            width: min(1180px, calc(100% - 48px));
+            height: 100%;
+            margin: 0 auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            font-size: 21px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-mark {
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 9px;
+            background: #18181b;
+            color: #ffffff;
+
+            font-size: 18px;
+        }
+
+        .back-link {
+            color: #71717a;
+            font-size: 14px;
+
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: #18181b;
+        }
+
+        .main {
+            flex: 1;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 55px 20px;
+        }
+
+        .register-wrapper {
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .register-card {
+            padding: 42px;
+
+            background: #ffffff;
+            border: 1px solid #e4e4e7;
+            border-radius: 16px;
+
+            box-shadow:
+                    0 20px 60px rgba(24, 24, 27, 0.06);
+        }
+
+        .register-header {
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .register-icon {
+            width: 56px;
+            height: 56px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin: 0 auto 22px;
+
+            border-radius: 14px;
+            background: #f4f4f5;
+
+            font-size: 25px;
+        }
+
+        .register-header h1 {
+            margin: 0 0 10px;
+
+            font-size: 28px;
+            line-height: 1.2;
+            letter-spacing: -0.7px;
+        }
+
+        .register-header p {
+            margin: 0;
+
+            color: #71717a;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 19px;
+        }
+
+        .form-label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #27272a;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .required {
+            color: #71717a;
+        }
+
+        .input {
+            width: 100%;
+            height: 48px;
+
+            padding: 0 14px;
+
+            border: 1px solid #d4d4d8;
+            border-radius: 8px;
+
+            background: #ffffff;
+            color: #18181b;
+
+            font-family: inherit;
+            font-size: 14px;
+
+            outline: none;
+
+            transition:
+                    border-color 0.2s ease,
+                    box-shadow 0.2s ease;
+        }
+
+        .input::placeholder {
+            color: #a1a1aa;
+        }
+
+        .input:focus {
+            border-color: #18181b;
+
+            box-shadow:
+                    0 0 0 3px rgba(24, 24, 27, 0.08);
+        }
+
+        .input:invalid:not(:placeholder-shown) {
+            border-color: #a1a1aa;
+        }
+
+        .field-hint {
+            margin-top: 6px;
+
+            color: #a1a1aa;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .password-requirements {
+            margin-top: 7px;
+
+            color: #a1a1aa;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .terms {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+
+            margin: 23px 0;
+
+            color: #71717a;
+            font-size: 12px;
+            line-height: 1.5;
+
+            cursor: pointer;
+        }
+
+        .terms input {
+            width: 16px;
+            height: 16px;
+
+            flex-shrink: 0;
+
+            margin: 1px 0 0;
+
+            accent-color: #18181b;
+            cursor: pointer;
+        }
+
+        .terms a {
+            color: #18181b;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .submit-button {
+            width: 100%;
+            height: 48px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 0;
+            border-radius: 8px;
+
+            background: #18181b;
+            color: #ffffff;
+
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition:
+                    background-color 0.2s ease,
+                    transform 0.2s ease;
+        }
+
+        .submit-button:hover:not(:disabled) {
+            background: #27272a;
+            transform: translateY(-1px);
+        }
+
+        .submit-button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+
+            margin: 28px 0;
+
+            color: #a1a1aa;
+            font-size: 12px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+
+            flex: 1;
+            height: 1px;
+
+            background: #e4e4e7;
+        }
+
+        .login {
+            text-align: center;
+
+            color: #71717a;
+            font-size: 13px;
+        }
+
+        .login a {
+            color: #18181b;
+            font-weight: 600;
+        }
+
+        .login a:hover {
+            text-decoration: underline;
+        }
+
+        .security-note {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+
+            margin-top: 25px;
+            padding: 12px;
+
+            border-radius: 8px;
+            background: #fafafa;
+
+            color: #71717a;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .security-icon {
+            flex-shrink: 0;
+            font-size: 13px;
+        }
+
+        /* ERROR */
+
+        .error-message {
+            display: none;
+
+            margin-bottom: 20px;
+            padding: 12px 14px;
+
+            border: 1px solid #e4e4e7;
+            border-radius: 8px;
+
+            background: #fafafa;
+            color: #52525b;
+
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .footer {
+            padding: 25px 20px;
+
+            border-top: 1px solid #e4e4e7;
+            background: #fafafa;
+
+            text-align: center;
+        }
+
+        .footer p {
+            margin: 0;
+
+            color: #a1a1aa;
+            font-size: 11px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+
+            margin-top: 9px;
+        }
+
+        .footer-links a {
+            color: #a1a1aa;
+            font-size: 11px;
+        }
+
+        .footer-links a:hover {
+            color: #18181b;
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                height: 68px;
+            }
+
+            .header-inner {
+                width: calc(100% - 32px);
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .logo-mark {
+                width: 30px;
+                height: 30px;
+            }
+
+            .main {
+                padding: 35px 16px;
+                align-items: flex-start;
+            }
+
+            .register-card {
+                padding: 30px 22px;
+                border-radius: 12px;
+            }
+
+            .register-header h1 {
+                font-size: 25px;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- HEADER -->
+
+    <header class="header">
+        <div class="header-inner">
+
+            <a href="/" class="logo">
+                <span class="logo-mark">✦</span>
+                <span>Neurox</span>
+            </a>
+
+            <a href="/" class="back-link">
+                ← На главную
+            </a>
+
+        </div>
+    </header>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <div class="register-wrapper">
+
+            <div class="register-card">
+
+                <!-- REGISTER HEADER -->
+
+                <div class="register-header">
+
+                    <div class="register-icon">
+                        ✦
+                    </div>
+
+                    <h1>
+                        Создать аккаунт
+                    </h1>
+
+                    <p>
+                        Зарегистрируйтесь в Neurox и начните
+                        создавать изображения с помощью ИИ.
+                    </p>
+
+                </div>
+
+
+                <!-- ERROR -->
+
+                <div
+                        id="errorMessage"
+                        class="error-message"
+                        role="alert"
+                ></div>
+
+
+                <!-- REGISTER FORM -->
+
+                <form id="registerForm">
+
+                    <!-- Username -->
+
+                    <div class="form-group">
+
+                        <label
+                                class="form-label"
+                                for="username"
+                        >
+                            Username
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                                class="input"
+                                id="username"
+                                name="username"
+                                type="text"
+                                placeholder="ivanich123"
+                                autocomplete="username"
+                                minlength="2"
+                                maxlength="100"
+                                required
+                        >
+
+                        <div class="field-hint">
+                            От 2 до 100 символов.
+                        </div>
+
+                    </div>
+
+
+                    <!-- Email -->
+
+                    <div class="form-group">
+
+                        <label
+                                class="form-label"
+                                for="email"
+                        >
+                            Email
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                                class="input"
+                                id="email"
+                                name="email"
+                                type="email"
+                                placeholder="ivanich123@gmail.com"
+                                autocomplete="email"
+                                required
+                        >
+
+                    </div>
+
+
+                    <!-- Phone -->
+
+                    <div class="form-group">
+
+                        <label
+                                class="form-label"
+                                for="phone"
+                        >
+                            Телефон
+                            <span class="required">
+                                (необязательно)
+                            </span>
+                        </label>
+
+                        <input
+                                class="input"
+                                id="phone"
+                                name="phone"
+                                type="tel"
+                                placeholder="+375296547812"
+                                autocomplete="tel"
+                                pattern="^\+.*$"
+                        >
+
+                        <div class="field-hint">
+                            Номер должен начинаться с символа +.
+                        </div>
+
+                    </div>
+
+
+                    <!-- Password -->
+
+                    <div class="form-group">
+
+                        <label
+                                class="form-label"
+                                for="password"
+                        >
+                            Пароль
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                                class="input"
+                                id="password"
+                                name="password"
+                                type="password"
+                                placeholder="Введите пароль"
+                                autocomplete="new-password"
+                                minlength="8"
+                                maxlength="30"
+                                required
+                        >
+
+                        <div class="password-requirements">
+                            От 8 до 30 символов.
+                        </div>
+
+                    </div>
+
+
+                    <!-- Terms -->
+
+                    <label class="terms">
+
+                        <input
+                                type="checkbox"
+                                name="terms"
+                                required
+                        >
+
+                        <span>
+                            Я принимаю
+                            <a href="/terms">
+                                условия использования
+                            </a>
+                            и
+                            <a href="/privacy">
+                                политику конфиденциальности
+                            </a>
+                            Neurox.
+                        </span>
+
+                    </label>
+
+
+                    <!-- SUBMIT -->
+
+                    <button
+                            type="submit"
+                            class="submit-button"
+                            id="submitButton"
+                    >
+                        Создать аккаунт
+                    </button>
+
+                </form>
+
+
+                <!-- DIVIDER -->
+
+                <div class="divider">
+                    уже есть аккаунт?
+                </div>
+
+
+                <!-- LOGIN -->
+
+                <div class="login">
+
+                    <a href="/login">
+                        Войти в аккаунт
+                    </a>
+
+                </div>
+
+
+                <!-- SECURITY -->
+
+                <div class="security-note">
+
+                    <span class="security-icon">
+                        🔒
+                    </span>
+
+                    <span>
+                        Мы защищаем ваши данные и не передаём
+                        персональную информацию третьим лицам
+                        без вашего согласия.
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <p>
+            © 2026 Neurox. Все права защищены.
+        </p>
+
+        <div class="footer-links">
+
+            <a href="/">
+                Главная
+            </a>
+
+            <a href="/login">
+                Вход
+            </a>
+
+            <a href="/verify">
+                Подтверждение email
+            </a>
+
+            <a href="/privacy">
+                Конфиденциальность
+            </a>
+
+            <a href="/terms">
+                Условия использования
+            </a>
+
+        </div>
+
+    </footer>
+
+</div>
+
+
+<script>
+    const form = document.getElementById("registerForm");
+    const submitButton = document.getElementById("submitButton");
+    const errorMessage = document.getElementById("errorMessage");
+
+    form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        errorMessage.textContent = "";
+        errorMessage.classList.remove("show");
+
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        const username = document.getElementById("username").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const password = document.getElementById("password").value;
+
+        const requestBody = {
+            username: username,
+            email: email,
+            password: password
+        };
+
+        // phone является необязательным полем.
+        // Отправляем его только если пользователь его указал.
+        if (phone) {
+            requestBody.phone = phone;
+        }
+
+        submitButton.disabled = true;
+        submitButton.textContent = "Создание аккаунта...";
+
+        try {
+            const response = await fetch("/api/v1/users", {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+
+                body: JSON.stringify(requestBody)
+            });
+
+            if (response.status === 201) {
+                // Пользователь успешно создан.
+                // Авторизация здесь НЕ выполняется.
+                window.location.href = "/login";
+                return;
+            }
+
+            let errorText = "Не удалось создать аккаунт.";
+
+            try {
+                const errorData = await response.json();
+
+                if (errorData.message) {
+                    errorText = errorData.message;
+                } else if (errorData.error) {
+                    errorText = errorData.error;
+                }
+            } catch (e) {
+                // Сервер мог вернуть ответ без JSON.
+            }
+
+            if (response.status === 400) {
+                errorText = errorText || "Некорректные данные.";
+            } else if (response.status === 500) {
+                errorText = "Ошибка сервера. Попробуйте ещё раз позже.";
+            }
+
+            throw new Error(errorText);
+
+        } catch (error) {
+            console.error("Registration error:", error);
+
+            if (error instanceof TypeError) {
+                errorMessage.textContent =
+                    "Не удалось подключиться к серверу. Проверьте соединение.";
+            } else {
+                errorMessage.textContent =
+                    error.message || "Произошла ошибка при регистрации.";
+            }
+
+            errorMessage.classList.add("show");
+
+            submitButton.disabled = false;
+            submitButton.textContent = "Создать аккаунт";
+        }
+    });
+</script>
+
+</body>
+</html>
+

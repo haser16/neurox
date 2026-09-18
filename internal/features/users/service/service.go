@@ -29,9 +29,9 @@ type UsersRepository interface {
 		ctx context.Context,
 		username string,
 	) (core_domain.User, error)
-	GetPasswordByUsername(
+	GetPasswordByEmail(
 		ctx context.Context,
-		username string,
+		email string,
 	) (string, int64, error)
 	DeleteUser(
 		ctx context.Context,

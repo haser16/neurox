@@ -25,11 +25,11 @@ definitions:
     type: object
   internal_features_users_transport_http.AuthenticateUserRequest:
     properties:
+      email:
+        example: ivanich123@gmail.com
+        type: string
       password:
         example: password123@@
-        type: string
-      username:
-        example: ivanich123
         type: string
     type: object
   internal_features_users_transport_http.AuthenticateUserResponse:
@@ -86,7 +86,7 @@ definitions:
       username:
         type: string
     type: object
-  internal_features_users_transport_http.GetUserByUsernameResponse:
+  internal_features_users_transport_http.GetUserByJWTResponse:
     properties:
       avatar:
         type: string
@@ -185,20 +185,14 @@ paths:
       - requests
   /users:
     get:
-      description: Get user by username
-      parameters:
-      - description: Username
-        in: query
-        name: username
-        required: true
-        type: string
+      description: Get user by jwt
       produces:
       - application/json
       responses:
         "200":
           description: Successfully retrieved user
           schema:
-            $ref: '#/definitions/internal_features_users_transport_http.GetUserByUsernameResponse'
+            $ref: '#/definitions/internal_features_users_transport_http.GetUserByJWTResponse'
         "400":
           description: Bad request
           schema:
@@ -211,7 +205,7 @@ paths:
           description: Internal server error
           schema:
             $ref: '#/definitions/neurox_internal_core_transport_http_response.ErrorResponse'
-      summary: Get user by username
+      summary: Get user by jwt
       tags:
       - users
     post:
