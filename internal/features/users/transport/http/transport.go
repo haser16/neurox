@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 	core_domain "neurox/internal/core/domain"
+	core_middleware "neurox/internal/core/transport/http/middleware"
 	core_http_server "neurox/internal/core/transport/http/server"
 	users_service "neurox/internal/features/users/service"
 )
@@ -27,7 +28,7 @@ type UsersService interface {
 	) (core_domain.User, error)
 	AuthenticateUser(
 		ctx context.Context,
-		username string,
+		email string,
 		password string,
 	) (string, error)
 	DeleteUser(
@@ -66,7 +67,10 @@ func (h *UsersHTTPHandler) Routes() []core_http_server.Route {
 		{
 			Method:  http.MethodGet,
 			Path:    "/users",
-			Handler: h.GetUserByUsername,
+			Handler: h.GetUserByJWT,
+			Middleware: []core_middleware.Middleware{
+				core_middleware.Auth(),
+			},
 		},
 		{
 			Method:  http.MethodPost,

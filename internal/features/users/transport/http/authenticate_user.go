@@ -8,7 +8,7 @@ import (
 )
 
 type AuthenticateUserRequest struct {
-	Username string `json:"username" example:"ivanich123"`
+	Email    string `json:"email" example:"ivanich123@gmail.com"`
 	Password string `json:"password" example:"password123@@"`
 }
 
@@ -41,7 +41,7 @@ func (h *UsersHTTPHandler) AuthenticateUser(rw http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	jwtToken, err := h.usersService.AuthenticateUser(ctx, request.Username, request.Password)
+	jwtToken, err := h.usersService.AuthenticateUser(ctx, request.Email, request.Password)
 	if err != nil {
 		responseHandler.ErrorResponse(
 			err,

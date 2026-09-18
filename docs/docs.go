@@ -124,28 +124,19 @@ const docTemplate = `{
         },
         "/users": {
             "get": {
-                "description": "Get user by username",
+                "description": "Get user by jwt",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "users"
                 ],
-                "summary": "Get user by username",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Username",
-                        "name": "username",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
+                "summary": "Get user by jwt",
                 "responses": {
                     "200": {
                         "description": "Successfully retrieved user",
                         "schema": {
-                            "$ref": "#/definitions/internal_features_users_transport_http.GetUserByUsernameResponse"
+                            "$ref": "#/definitions/internal_features_users_transport_http.GetUserByJWTResponse"
                         }
                     },
                     "400": {
@@ -446,13 +437,13 @@ const docTemplate = `{
         "internal_features_users_transport_http.AuthenticateUserRequest": {
             "type": "object",
             "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "ivanich123@gmail.com"
+                },
                 "password": {
                     "type": "string",
                     "example": "password123@@"
-                },
-                "username": {
-                    "type": "string",
-                    "example": "ivanich123"
                 }
             }
         },
@@ -534,7 +525,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_features_users_transport_http.GetUserByUsernameResponse": {
+        "internal_features_users_transport_http.GetUserByJWTResponse": {
             "type": "object",
             "properties": {
                 "avatar": {

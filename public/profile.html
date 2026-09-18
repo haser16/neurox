@@ -1,0 +1,2408 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Neurox — Мой профиль</title>
+
+    <meta
+            name="description"
+            content="Персональная страница пользователя Neurox."
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #ffffff;
+            color: #18181b;
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.5;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+        .container {
+            width: min(1180px, calc(100% - 48px));
+            margin: 0 auto;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.92);
+            border-bottom: 1px solid #f4f4f5;
+            backdrop-filter: blur(12px);
+        }
+
+        .header-inner {
+            height: 76px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 21px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-mark {
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9px;
+            background: #18181b;
+            color: #ffffff;
+            font-size: 18px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .header-link {
+            color: #52525b;
+            font-size: 14px;
+            transition: color 0.2s ease;
+        }
+
+        .header-link:hover {
+            color: #18181b;
+        }
+
+        /* =========================
+           BUTTONS
+        ========================= */
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-height: 44px;
+            padding: 0 20px;
+
+            border-radius: 8px;
+            border: 1px solid transparent;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition:
+                    background-color 0.2s ease,
+                    border-color 0.2s ease,
+                    transform 0.2s ease;
+        }
+
+        .button:hover {
+            transform: translateY(-1px);
+        }
+
+        .button-primary {
+            background: #18181b;
+            color: #ffffff;
+        }
+
+        .button-primary:hover {
+            background: #27272a;
+        }
+
+        .button-secondary {
+            background: #ffffff;
+            border-color: #e4e4e7;
+            color: #18181b;
+        }
+
+        .button-secondary:hover {
+            background: #fafafa;
+        }
+
+        /* =========================
+           PROFILE
+        ========================= */
+
+        .profile-section {
+            padding: 80px 0 100px;
+
+            background:
+                    radial-gradient(
+                            circle at 50% 0%,
+                            #fafafa 0,
+                            #ffffff 50%
+                    );
+        }
+
+        .profile-header {
+            margin-bottom: 45px;
+        }
+
+        .profile-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            padding: 7px 12px;
+            margin-bottom: 20px;
+
+            border: 1px solid #e4e4e7;
+            border-radius: 999px;
+
+            background: #fafafa;
+            color: #52525b;
+
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .profile-label-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #18181b;
+        }
+
+        .profile-header h1 {
+            margin: 0;
+
+            font-size: clamp(40px, 5vw, 58px);
+            line-height: 1.05;
+            letter-spacing: -2.5px;
+        }
+
+        .profile-header p {
+            max-width: 650px;
+            margin: 18px 0 0;
+
+            color: #71717a;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        /* =========================
+           PROFILE GRID
+        ========================= */
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .profile-card {
+            padding: 30px;
+
+            border: 1px solid #e4e4e7;
+            border-radius: 14px;
+
+            background: #ffffff;
+        }
+
+        /* =========================
+           AVATAR
+        ========================= */
+
+        .avatar-section {
+            text-align: center;
+        }
+
+        .avatar-picker {
+            width: 110px;
+            height: 110px;
+
+            margin: 0 auto 20px;
+
+            position: relative;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            overflow: hidden;
+
+            border: 1px solid #e4e4e7;
+            border-radius: 50%;
+
+            background: #f4f4f5;
+
+            color: #71717a;
+            font-size: 34px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition:
+                    border-color 0.2s ease,
+                    transform 0.2s ease,
+                    background-color 0.2s ease;
+        }
+
+        .avatar-picker:hover {
+            border-color: #a1a1aa;
+            background: #e4e4e7;
+            transform: scale(1.02);
+        }
+
+        .avatar-picker:focus-visible {
+            outline: 2px solid #18181b;
+            outline-offset: 3px;
+        }
+
+        .avatar-picker img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 100%;
+            height: 100%;
+        }
+
+        .avatar-upload-input {
+            display: none;
+        }
+
+        .avatar-upload-hint {
+            margin: -10px 0 18px;
+
+            color: #a1a1aa;
+            font-size: 11px;
+        }
+
+        .avatar-name {
+            margin: 0;
+
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .avatar-email {
+            margin: 6px 0 0;
+
+            color: #71717a;
+            font-size: 13px;
+
+            word-break: break-word;
+        }
+
+        .verification {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            margin-top: 15px;
+            padding: 6px 10px;
+
+            border: 1px solid #e4e4e7;
+            border-radius: 999px;
+
+            color: #52525b;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .verification-dot {
+            width: 6px;
+            height: 6px;
+
+            border-radius: 50%;
+            background: #18181b;
+        }
+
+        .verification-unverified .verification-dot {
+            background: #a1a1aa;
+        }
+
+        /* =========================
+           USER DATA
+        ========================= */
+
+        .card-title {
+            margin: 0 0 25px;
+
+            font-size: 19px;
+            letter-spacing: -0.3px;
+        }
+
+        .data-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .data-row {
+            display: grid;
+            grid-template-columns: 170px 1fr;
+            gap: 20px;
+
+            padding: 17px 0;
+
+            border-bottom: 1px solid #f4f4f5;
+        }
+
+        .data-row:first-child {
+            padding-top: 0;
+        }
+
+        .data-row:last-child {
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .data-label {
+            color: #71717a;
+            font-size: 13px;
+        }
+
+        .data-value {
+            min-width: 0;
+
+            color: #18181b;
+            font-size: 14px;
+            font-weight: 500;
+
+            word-break: break-word;
+        }
+
+        /* =========================
+           EMAIL VERIFICATION
+        ========================= */
+
+        .verified {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .verified-icon {
+            width: 17px;
+            height: 17px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #18181b;
+            color: #ffffff;
+
+            font-size: 10px;
+        }
+
+        .not-verified {
+            color: #71717a;
+        }
+
+        /* =========================
+           PHONE
+        ========================= */
+
+        .phone-value {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .phone-hidden {
+            filter: blur(5px);
+            user-select: none;
+            transition: filter 0.2s ease;
+        }
+
+        .phone-visible {
+            filter: none;
+        }
+
+        .phone-toggle {
+            padding: 0;
+
+            border: none;
+            background: transparent;
+
+            color: #52525b;
+
+            font-size: 12px;
+            font-weight: 600;
+
+            cursor: pointer;
+        }
+
+        .phone-toggle:hover {
+            color: #18181b;
+            text-decoration: underline;
+        }
+
+        .phone-not-set {
+            color: #a1a1aa;
+            font-weight: 400;
+        }
+
+        /* =========================
+           ACTIONS
+        ========================= */
+
+        .profile-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+
+            margin-top: 30px;
+        }
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        .profile-status {
+            display: none;
+
+            margin-bottom: 20px;
+            padding: 13px 16px;
+
+            border: 1px solid #e4e4e7;
+            border-radius: 9px;
+
+            background: #fafafa;
+
+            color: #52525b;
+            font-size: 13px;
+        }
+
+        .profile-status.visible {
+            display: block;
+        }
+
+        .profile-status.error {
+            border-color: #fecaca;
+            background: #fef2f2;
+            color: #991b1b;
+        }
+
+        .profile-status.success {
+            border-color: #d4d4d8;
+            background: #fafafa;
+            color: #27272a;
+        }
+
+        /* =========================
+           REQUEST HISTORY
+        ========================= */
+
+        .history-section {
+            margin-top: 20px;
+        }
+
+        .history-card {
+            padding: 30px;
+
+            border: 1px solid #e4e4e7;
+            border-radius: 14px;
+
+            background: #fafafa;
+        }
+
+        .history-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+
+            margin-bottom: 25px;
+        }
+
+        .history-header-content {
+            max-width: 650px;
+        }
+
+        .history-header h2 {
+            margin: 0;
+
+            font-size: 24px;
+            letter-spacing: -0.7px;
+        }
+
+        .history-header p {
+            margin: 8px 0 0;
+
+            color: #71717a;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .history-preview {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .history-item {
+            padding: 18px;
+
+            border: 1px solid #e4e4e7;
+            border-radius: 10px;
+
+            background: #ffffff;
+        }
+
+        .history-item-label {
+            margin-bottom: 9px;
+
+            color: #a1a1aa;
+            font-size: 10px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+        }
+
+        .history-item p {
+            margin: 0;
+
+            color: #52525b;
+            font-size: 13px;
+            line-height: 1.6;
+
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+
+            overflow: hidden;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+            padding: 65px 0 30px;
+
+            border-top: 1px solid #e4e4e7;
+
+            background: #fafafa;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr repeat(3, 1fr);
+            gap: 50px;
+
+            padding-bottom: 55px;
+        }
+
+        .footer-brand {
+            max-width: 300px;
+        }
+
+        .footer-brand p {
+            margin: 18px 0 0;
+
+            color: #71717a;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .footer-column h4 {
+            margin: 0 0 18px;
+            font-size: 13px;
+        }
+
+        .footer-column a {
+            display: block;
+
+            margin-bottom: 11px;
+
+            color: #71717a;
+            font-size: 13px;
+        }
+
+        .footer-column a:hover {
+            color: #18181b;
+        }
+
+        .footer-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+
+            padding-top: 25px;
+
+            border-top: 1px solid #e4e4e7;
+        }
+
+        .copyright {
+            color: #a1a1aa;
+            font-size: 12px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            color: #a1a1aa;
+            font-size: 12px;
+        }
+
+        .footer-links a:hover {
+            color: #18181b;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .avatar-section {
+                max-width: 500px;
+                width: 100%;
+                margin: 0 auto;
+            }
+
+            .history-preview {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .container {
+                width: min(100% - 32px, 1180px);
+            }
+
+            .header-inner {
+                height: 68px;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .logo-mark {
+                width: 30px;
+                height: 30px;
+            }
+
+            .header-actions {
+                gap: 14px;
+            }
+
+            .header-link {
+                font-size: 13px;
+            }
+
+            .profile-section {
+                padding: 60px 0 75px;
+            }
+
+            .profile-header h1 {
+                font-size: 40px;
+                letter-spacing: -1.8px;
+            }
+
+            .profile-card {
+                padding: 24px 20px;
+            }
+
+            .data-row {
+                grid-template-columns: 1fr;
+                gap: 5px;
+            }
+
+            .profile-actions {
+                flex-direction: column;
+            }
+
+            .profile-actions .button {
+                width: 100%;
+            }
+
+            .history-card {
+                padding: 24px 20px;
+            }
+
+            .history-header {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 18px;
+            }
+
+            .history-header .button {
+                width: 100%;
+            }
+
+            .footer {
+                padding-top: 50px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 35px 25px;
+            }
+
+            .footer-brand {
+                grid-column: 1 / -1;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="container header-inner">
+
+        <a href="/" class="logo">
+            <span class="logo-mark">✦</span>
+            <span>Neurox</span>
+        </a>
+
+        <div class="header-actions">
+
+            <a href="/requests" class="header-link">
+                История запросов
+            </a>
+
+            <a href="/logout" class="header-link">
+                Выйти
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <section class="profile-section">
+
+        <div class="container">
+
+            <div class="profile-header">
+
+                <div class="profile-label">
+                    <span class="profile-label-dot"></span>
+                    Личный кабинет
+                </div>
+
+                <h1>
+                    Мой профиль
+                </h1>
+
+                <p>
+                    Управляйте данными своего аккаунта
+                    и просматривайте историю созданных запросов.
+                </p>
+
+            </div>
+
+
+            <div
+                    id="profile-status"
+                    class="profile-status"
+            ></div>
+
+
+            <div class="profile-grid">
+
+                <!-- =========================
+                     AVATAR
+                ========================= -->
+
+                <div class="profile-card avatar-section">
+
+                    <label
+                            class="avatar-picker"
+                            for="avatar-input"
+                            title="Выбрать аватар"
+                    >
+
+                        <img
+                                id="avatar-image"
+                                src=""
+                                alt="Аватар пользователя"
+                                style="display: none;"
+                        >
+
+                        <span
+                                id="avatar-placeholder"
+                                class="avatar-placeholder"
+                        >
+                            U
+                        </span>
+
+                    </label>
+
+                    <input
+                            id="avatar-input"
+                            class="avatar-upload-input"
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp,image/gif"
+                    >
+
+                    <div class="avatar-upload-hint">
+                        Нажмите на фото, чтобы изменить аватар
+                    </div>
+
+
+                    <h2
+                            id="avatar-name"
+                            class="avatar-name"
+                    >
+                        Загрузка...
+                    </h2>
+
+                    <p
+                            id="avatar-email"
+                            class="avatar-email"
+                    >
+                        Загрузка...
+                    </p>
+
+
+                    <div
+                            id="verification"
+                            class="verification"
+                    >
+
+                        <span class="verification-dot"></span>
+
+                        <span id="verification-text">
+                            Загрузка...
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================
+                     USER DATA
+                ========================= -->
+
+                <div class="profile-card">
+
+                    <h2 class="card-title">
+                        Данные аккаунта
+                    </h2>
+
+                    <div class="data-list">
+
+                        <div class="data-row">
+
+                            <div class="data-label">
+                                Username
+                            </div>
+
+                            <div
+                                    id="username"
+                                    class="data-value"
+                            >
+                                Загрузка...
+                            </div>
+
+                        </div>
+
+
+                        <div class="data-row">
+
+                            <div class="data-label">
+                                Email
+                            </div>
+
+                            <div
+                                    id="email"
+                                    class="data-value"
+                            >
+                                Загрузка...
+                            </div>
+
+                        </div>
+
+
+                        <div class="data-row">
+
+                            <div class="data-label">
+                                Статус email
+                            </div>
+
+                            <div
+                                    id="email-status"
+                                    class="data-value"
+                            >
+                                Загрузка...
+                            </div>
+
+                        </div>
+
+
+                        <div class="data-row">
+
+                            <div class="data-label">
+                                Телефон
+                            </div>
+
+                            <div class="data-value phone-value">
+
+                                <span
+                                        id="phone"
+                                        class="phone-hidden"
+                                >
+                                    Не указан
+                                </span>
+
+                                <button
+                                        type="button"
+                                        id="phone-toggle"
+                                        class="phone-toggle"
+                                        onclick="togglePhone()"
+                                        style="display: none;"
+                                >
+                                    Показать
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="profile-actions">
+
+                        <a
+                                href="/forgot-password"
+                                class="button button-secondary"
+                        >
+                            Изменить пароль
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 REQUEST HISTORY
+            ========================= -->
+
+            <div class="history-section">
+
+                <div class="history-card">
+
+                    <div class="history-header">
+
+                        <div class="history-header-content">
+
+                            <h2>
+                                История запросов
+                            </h2>
+
+                            <p>
+                                Здесь находятся ваши предыдущие запросы
+                                на генерацию изображений и созданные
+                                результаты.
+                            </p>
+
+                        </div>
+
+                        <a
+                                href="/requests"
+                                class="button button-primary"
+                        >
+                            Открыть историю
+                        </a>
+
+                    </div>
+
+
+                    <div
+                            id="history-preview"
+                            class="history-preview"
+                    >
+
+                        <div class="history-item">
+
+                            <div class="history-item-label">
+                                История
+                            </div>
+
+                            <p>
+                                Загрузка истории запросов...
+                            </p>
+
+                        </div>
+
+
+                        <div class="history-item">
+
+                            <div class="history-item-label">
+                                Генерация
+                            </div>
+
+                            <p>
+                                Загрузка истории запросов...
+                            </p>
+
+                        </div>
+
+
+                        <div class="history-item">
+
+                            <div class="history-item-label">
+                                Neurox
+                            </div>
+
+                            <p>
+                                Загрузка истории запросов...
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="container">
+
+        <div class="footer-grid">
+
+            <div class="footer-brand">
+
+                <a href="/" class="logo">
+                    <span class="logo-mark">✦</span>
+                    <span>Neurox</span>
+                </a>
+
+                <p>
+                    Платформа для создания изображений
+                    с помощью искусственного интеллекта.
+                    Превращайте текстовые идеи в визуальные
+                    образы.
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Neurox
+                </h4>
+
+                <a href="/">
+                    Главная
+                </a>
+
+                <a href="/#features">
+                    Возможности
+                </a>
+
+                <a href="/#how-it-works">
+                    Как это работает
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Аккаунт
+                </h4>
+
+                <a href="/profile">
+                    Мой профиль
+                </a>
+
+                <a href="/requests">
+                    История запросов
+                </a>
+
+                <a href="/forgot-password">
+                    Изменить пароль
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Помощь
+                </h4>
+
+                <a href="/support">
+                    Поддержка
+                </a>
+
+                <a href="/privacy">
+                    Конфиденциальность
+                </a>
+
+                <a href="/terms">
+                    Условия использования
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <div class="copyright">
+                © 2026 Neurox. Все права защищены.
+            </div>
+
+            <div class="footer-links">
+
+                <a href="/privacy">
+                    Конфиденциальность
+                </a>
+
+                <a href="/terms">
+                    Условия использования
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<script>
+    /*
+     * =========================================================
+     * NEUROX PROFILE
+     * =========================================================
+     *
+     * JWT хранится в:
+     *
+     * localStorage["neurox_token"]
+     *
+     * Все защищённые запросы отправляются:
+     *
+     * Authorization: Bearer <JWT>
+     *
+     * =========================================================
+     */
+
+
+    const API_BASE = "/api/v1";
+
+
+    /* =========================================================
+       AUTH
+    ========================================================= */
+
+    function getAuthToken() {
+        return localStorage.getItem("neurox_token");
+    }
+
+
+    function removeAuthToken() {
+        localStorage.removeItem("neurox_token");
+    }
+
+
+    function getAuthHeaders() {
+
+        const token = getAuthToken();
+
+        return {
+            "Accept": "application/json",
+            "Authorization": `Bearer ${token}`
+        };
+    }
+
+
+    /* =========================================================
+       STATUS
+    ========================================================= */
+
+    function showStatus(message, type = "") {
+
+        const status = document.getElementById("profile-status");
+
+        status.textContent = message;
+
+        status.className = "profile-status visible";
+
+        if (type) {
+            status.classList.add(type);
+        }
+    }
+
+
+    function hideStatus() {
+
+        const status = document.getElementById("profile-status");
+
+        status.textContent = "";
+
+        status.className = "profile-status";
+    }
+
+
+    /* =========================================================
+       API ERROR
+    ========================================================= */
+
+    async function getApiError(response) {
+
+        try {
+
+            const data = await response.json();
+
+            if (data && data.message) {
+                return data.message;
+            }
+
+            if (data && data.error) {
+                return data.error;
+            }
+
+        } catch (error) {
+            // Ответ не JSON
+        }
+
+        return `Ошибка сервера: ${response.status}`;
+    }
+
+
+    /* =========================================================
+       LOGOUT / 401
+    ========================================================= */
+
+    function handleUnauthorized() {
+
+        removeAuthToken();
+
+        window.location.href = "/login";
+    }
+
+
+    /* =========================================================
+       LOAD USER
+       GET /api/v1/users
+    ========================================================= */
+
+    async function loadUser() {
+
+        const token = getAuthToken();
+
+        if (!token) {
+
+            window.location.href = "/login";
+
+            return;
+        }
+
+
+        try {
+
+            const response = await fetch(
+                `${API_BASE}/users`,
+                {
+                    method: "GET",
+
+                    headers: getAuthHeaders()
+                }
+            );
+
+
+            if (response.status === 401) {
+
+                handleUnauthorized();
+
+                return;
+            }
+
+
+            if (!response.ok) {
+
+                const errorMessage =
+                    await getApiError(response);
+
+                throw new Error(errorMessage);
+            }
+
+
+            const user = await response.json();
+
+
+            console.log("User from API:", user);
+
+
+            renderUser(user);
+
+
+            hideStatus();
+
+        } catch (error) {
+
+            console.error(
+                "Ошибка получения пользователя:",
+                error
+            );
+
+            showStatus(
+                error.message ||
+                "Не удалось загрузить данные пользователя.",
+                "error"
+            );
+        }
+    }
+
+
+    /* =========================================================
+       RENDER USER
+    ========================================================= */
+
+    function renderUser(user) {
+
+        const username =
+            user.username ||
+            "Пользователь";
+
+
+        const email =
+            user.email ||
+            "Email не указан";
+
+
+        const phone =
+            user.phone ||
+            "";
+
+
+        /* =========================
+           USERNAME
+        ========================= */
+
+        document.getElementById("username").textContent =
+            username;
+
+
+        document.getElementById("avatar-name").textContent =
+            username;
+
+
+        /* =========================
+           EMAIL
+        ========================= */
+
+        document.getElementById("avatar-email").textContent =
+            email;
+
+
+        const emailElement =
+            document.getElementById("email");
+
+
+        if (user.email) {
+
+            emailElement.innerHTML = `
+                <span class="verified">
+                    <span class="verified-icon">
+                        ✓
+                    </span>
+
+                    ${escapeHtml(email)}
+                </span>
+            `;
+
+        } else {
+
+            emailElement.textContent =
+                "Email не указан";
+        }
+
+
+        /*
+         * В текущем Swagger нет отдельного поля
+         * emailVerified / verified.
+         *
+         * Поэтому здесь отображаем наличие email.
+         */
+
+        const verification =
+            document.getElementById("verification");
+
+
+        const verificationText =
+            document.getElementById("verification-text");
+
+
+        if (email) {
+
+            verification.classList.remove(
+                "verification-unverified"
+            );
+
+            verificationText.textContent =
+                "Email указан";
+
+            document.getElementById(
+                "email-status"
+            ).textContent =
+                "Указан";
+
+        } else {
+
+            verification.classList.add(
+                "verification-unverified"
+            );
+
+            verificationText.textContent =
+                "Email не указан";
+
+            document.getElementById(
+                "email-status"
+            ).textContent =
+                "Не указан";
+        }
+
+
+        /* =========================
+           PHONE
+        ========================= */
+
+        const phoneElement =
+            document.getElementById("phone");
+
+
+        const phoneToggle =
+            document.getElementById("phone-toggle");
+
+
+        if (phone) {
+
+            phoneElement.textContent =
+                phone;
+
+            phoneElement.classList.add(
+                "phone-hidden"
+            );
+
+            phoneElement.classList.remove(
+                "phone-visible"
+            );
+
+            phoneToggle.style.display =
+                "inline-block";
+
+            phoneToggle.textContent =
+                "Показать";
+
+        } else {
+
+            phoneElement.textContent =
+                "Не указан";
+
+            phoneElement.className =
+                "phone-not-set";
+
+            phoneToggle.style.display =
+                "none";
+        }
+
+
+        /* =========================
+           AVATAR
+        ========================= */
+
+        setAvatar(
+            user.avatar,
+            username
+        );
+    }
+
+
+    /* =========================================================
+       AVATAR
+    ========================================================= */
+
+    function setAvatar(avatar, username) {
+
+        const image =
+            document.getElementById("avatar-image");
+
+
+        const placeholder =
+            document.getElementById(
+                "avatar-placeholder"
+            );
+
+
+        /*
+         * Если backend вернул avatar,
+         * используем его.
+         */
+
+        if (avatar) {
+
+            image.src =
+                normalizeAvatarUrl(avatar);
+
+
+            image.style.display =
+                "block";
+
+
+            placeholder.style.display =
+                "none";
+
+
+            image.onerror = function () {
+
+                image.style.display =
+                    "none";
+
+                placeholder.style.display =
+                    "flex";
+
+                placeholder.textContent =
+                    getInitial(username);
+            };
+
+
+            return;
+        }
+
+
+        /*
+         * Если avatar отсутствует —
+         * показываем первую букву username.
+         */
+
+        image.src = "";
+
+        image.style.display =
+            "none";
+
+
+        placeholder.style.display =
+            "flex";
+
+
+        placeholder.textContent =
+            getInitial(username);
+    }
+
+
+    /* =========================================================
+       AVATAR URL
+    ========================================================= */
+
+    function normalizeAvatarUrl(avatar) {
+
+        /*
+         * Если backend уже отдаёт полноценный URL:
+         *
+         * http://localhost:5050/...
+         *
+         * оставляем его как есть.
+         */
+
+        if (
+            avatar.startsWith("http://") ||
+            avatar.startsWith("https://") ||
+            avatar.startsWith("data:")
+        ) {
+            return avatar;
+        }
+
+
+        /*
+         * Если backend отдаёт путь:
+         *
+         * /uploads/avatar.jpg
+         *
+         * используем его относительно текущего origin.
+         */
+
+        if (avatar.startsWith("/")) {
+            return avatar;
+        }
+
+
+        return `/${avatar}`;
+    }
+
+
+    /* =========================================================
+       INITIAL
+    ========================================================= */
+
+    function getInitial(username) {
+
+        if (!username) {
+            return "U";
+        }
+
+
+        return username
+            .trim()
+            .charAt(0)
+            .toUpperCase();
+    }
+
+
+    /* =========================================================
+       PHONE
+    ========================================================= */
+
+    function togglePhone() {
+
+        const phone =
+            document.getElementById("phone");
+
+
+        const button =
+            document.getElementById(
+                "phone-toggle"
+            );
+
+
+        if (
+            phone.classList.contains(
+                "phone-visible"
+            )
+        ) {
+
+            phone.classList.remove(
+                "phone-visible"
+            );
+
+            phone.classList.add(
+                "phone-hidden"
+            );
+
+            button.textContent =
+                "Показать";
+
+        } else {
+
+            phone.classList.remove(
+                "phone-hidden"
+            );
+
+            phone.classList.add(
+                "phone-visible"
+            );
+
+            button.textContent =
+                "Скрыть";
+        }
+    }
+
+
+    /* =========================================================
+       AVATAR FILE SELECT
+    ========================================================= */
+
+    document
+        .getElementById("avatar-input")
+        .addEventListener(
+            "change",
+            handleAvatarSelect
+        );
+
+
+    async function handleAvatarSelect(event) {
+
+        const file =
+            event.target.files[0];
+
+
+        if (!file) {
+            return;
+        }
+
+
+        /*
+         * Разрешаем только изображения.
+         */
+
+        if (!file.type.startsWith("image/")) {
+
+            showStatus(
+                "Можно выбрать только изображение.",
+                "error"
+            );
+
+            event.target.value = "";
+
+            return;
+        }
+
+
+        /*
+         * Ограничение размера — 10 MB.
+         */
+
+        const maxSize =
+            10 * 1024 * 1024;
+
+
+        if (file.size > maxSize) {
+
+            showStatus(
+                "Размер изображения не должен превышать 10 МБ.",
+                "error"
+            );
+
+            event.target.value = "";
+
+            return;
+        }
+
+
+        /*
+         * Сначала сразу показываем выбранное
+         * изображение в кружке.
+         */
+
+        const localPreviewUrl =
+            URL.createObjectURL(file);
+
+
+        setAvatarPreview(
+            localPreviewUrl
+        );
+
+
+        /*
+         * Отправляем файл на backend.
+         */
+
+        await uploadAvatar(file);
+
+
+        /*
+         * Освобождаем временный URL.
+         */
+
+        URL.revokeObjectURL(
+            localPreviewUrl
+        );
+
+
+        /*
+         * Позволяет выбрать тот же файл повторно.
+         */
+
+        event.target.value = "";
+    }
+
+
+    /* =========================================================
+       AVATAR PREVIEW
+    ========================================================= */
+
+    function setAvatarPreview(url) {
+
+        const image =
+            document.getElementById(
+                "avatar-image"
+            );
+
+
+        const placeholder =
+            document.getElementById(
+                "avatar-placeholder"
+            );
+
+
+        image.src = url;
+
+        image.style.display =
+            "block";
+
+
+        placeholder.style.display =
+            "none";
+    }
+
+
+    /* =========================================================
+       UPLOAD AVATAR
+       POST /api/v1/users/{id}/avatar
+    ========================================================= */
+
+    async function uploadAvatar(file) {
+
+        const token =
+            getAuthToken();
+
+
+        if (!token) {
+
+            handleUnauthorized();
+
+            return;
+        }
+
+
+        /*
+         * Сначала получаем актуального пользователя,
+         * чтобы знать его ID.
+         */
+
+        let user;
+
+
+        try {
+
+            const userResponse =
+                await fetch(
+                    `${API_BASE}/users`,
+                    {
+                        method: "GET",
+
+                        headers: getAuthHeaders()
+                    }
+                );
+
+
+            if (
+                userResponse.status === 401
+            ) {
+
+                handleUnauthorized();
+
+                return;
+            }
+
+
+            if (!userResponse.ok) {
+
+                const message =
+                    await getApiError(
+                        userResponse
+                    );
+
+                throw new Error(message);
+            }
+
+
+            user =
+                await userResponse.json();
+
+        } catch (error) {
+
+            console.error(
+                "Ошибка получения ID пользователя:",
+                error
+            );
+
+            showStatus(
+                "Не удалось определить пользователя.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        if (!user.id) {
+
+            showStatus(
+                "API не вернул ID пользователя.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        /*
+         * FormData.
+         *
+         * Content-Type вручную НЕ устанавливаем.
+         */
+
+        const formData =
+            new FormData();
+
+
+        formData.append(
+            "avatar",
+            file
+        );
+
+
+        try {
+
+            showStatus(
+                "Загрузка аватара...",
+                ""
+            );
+
+
+            const response =
+                await fetch(
+                    `${API_BASE}/users/${user.id}/avatar`,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Authorization":
+                                `Bearer ${token}`
+                        },
+
+                        body: formData
+                    }
+                );
+
+
+            if (
+                response.status === 401
+            ) {
+
+                handleUnauthorized();
+
+                return;
+            }
+
+
+            if (!response.ok) {
+
+                const message =
+                    await getApiError(
+                        response
+                    );
+
+                throw new Error(message);
+            }
+
+
+            /*
+             * Backend по Swagger возвращает 204.
+             */
+
+            showStatus(
+                "Аватар успешно обновлён.",
+                "success"
+            );
+
+
+            /*
+             * После загрузки снова получаем пользователя.
+             */
+
+            await loadUser();
+
+
+        } catch (error) {
+
+            console.error(
+                "Ошибка загрузки аватара:",
+                error
+            );
+
+
+            showStatus(
+                error.message ||
+                "Не удалось загрузить аватар.",
+                "error"
+            );
+        }
+    }
+
+
+    /* =========================================================
+       LOAD REQUEST HISTORY
+       GET /api/v1/requests
+    ========================================================= */
+
+    async function loadRequestHistory() {
+
+        const token = getAuthToken();
+
+        if (!token) {
+            window.location.href = "/login";
+            return;
+        }
+
+
+        const historyPreview =
+            document.getElementById(
+                "history-preview"
+            );
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API_BASE}/requests?limit=3&offset=0`,
+                    {
+                        method: "GET",
+
+                        headers: getAuthHeaders()
+                    }
+                );
+
+
+            if (response.status === 401) {
+
+                handleUnauthorized();
+
+                return;
+            }
+
+
+            if (!response.ok) {
+
+                const message =
+                    await getApiError(
+                        response
+                    );
+
+                throw new Error(message);
+            }
+
+
+            const requests =
+                await response.json();
+
+
+            renderRequestHistory(
+                requests
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Ошибка получения истории запросов:",
+                error
+            );
+
+
+            historyPreview.innerHTML = "";
+
+            for (let i = 0; i < 3; i++) {
+
+                const item =
+                    document.createElement("div");
+
+                item.className =
+                    "history-item";
+
+
+                const label =
+                    document.createElement("div");
+
+                label.className =
+                    "history-item-label";
+
+                label.textContent =
+                    i === 0
+                        ? "История"
+                        : i === 1
+                            ? "Генерация"
+                            : "Neurox";
+
+
+                const text =
+                    document.createElement("p");
+
+                text.textContent =
+                    "Не удалось загрузить историю запросов.";
+
+
+                item.appendChild(label);
+                item.appendChild(text);
+
+                historyPreview.appendChild(item);
+            }
+        }
+    }
+
+
+    /* =========================================================
+       RENDER REQUEST HISTORY
+    ========================================================= */
+
+    function renderRequestHistory(requests) {
+
+        const historyPreview =
+            document.getElementById(
+                "history-preview"
+            );
+
+
+        historyPreview.innerHTML = "";
+
+
+        /*
+         * API должен вернуть массив:
+         *
+         * [
+         *   {
+         *      id: 1,
+         *      image: "...",
+         *      prompt: "..."
+         *   }
+         * ]
+         */
+
+
+        if (
+            !Array.isArray(requests) ||
+            requests.length === 0
+        ) {
+
+            for (let i = 0; i < 3; i++) {
+
+                const item =
+                    document.createElement("div");
+
+                item.className =
+                    "history-item";
+
+
+                const label =
+                    document.createElement("div");
+
+                label.className =
+                    "history-item-label";
+
+                label.textContent =
+                    i === 0
+                        ? "История"
+                        : i === 1
+                            ? "Генерация"
+                            : "Neurox";
+
+
+                const text =
+                    document.createElement("p");
+
+                text.textContent =
+                    "У вас пока нет созданных запросов.";
+
+
+                item.appendChild(label);
+                item.appendChild(text);
+
+                historyPreview.appendChild(item);
+            }
+
+            return;
+        }
+
+
+        /*
+         * Показываем максимум 3 последних запроса.
+         */
+
+        const latestRequests =
+            requests.slice(0, 3);
+
+
+        latestRequests.forEach(
+            (request, index) => {
+
+                const item =
+                    document.createElement("div");
+
+                item.className =
+                    "history-item";
+
+
+                const label =
+                    document.createElement("div");
+
+                label.className =
+                    "history-item-label";
+
+                label.textContent =
+                    request.id
+                        ? `Запрос #${request.id}`
+                        : index === 0
+                            ? "История"
+                            : index === 1
+                                ? "Генерация"
+                                : "Neurox";
+
+
+                const text =
+                    document.createElement("p");
+
+
+                text.textContent =
+                    request.prompt ||
+                    "Запрос без текста.";
+
+
+                item.appendChild(label);
+                item.appendChild(text);
+
+                historyPreview.appendChild(item);
+            }
+        );
+
+
+        /*
+         * Если API вернул меньше трёх запросов,
+         * сохраняем исходную структуру из трёх карточек.
+         */
+
+        while (
+            historyPreview.children.length < 3
+            ) {
+
+            const item =
+                document.createElement("div");
+
+            item.className =
+                "history-item";
+
+
+            const label =
+                document.createElement("div");
+
+            label.className =
+                "history-item-label";
+
+            label.textContent =
+                "Neurox";
+
+
+            const text =
+                document.createElement("p");
+
+            text.textContent =
+                "Здесь появятся ваши следующие запросы.";
+
+
+            item.appendChild(label);
+            item.appendChild(text);
+
+            historyPreview.appendChild(item);
+        }
+    }
+
+
+    /* =========================================================
+       ESCAPE HTML
+    ========================================================= */
+
+    function escapeHtml(value) {
+
+        const div =
+            document.createElement("div");
+
+        div.textContent =
+            value ?? "";
+
+        return div.innerHTML;
+    }
+
+
+    /* =========================================================
+       INIT
+    ========================================================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        () => {
+
+            loadUser();
+
+            loadRequestHistory();
+
+        }
+    );
+</script>
+
+</body>
+</html>

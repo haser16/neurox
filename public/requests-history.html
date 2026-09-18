@@ -1,0 +1,2186 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Neurox — История запросов</title>
+
+    <meta
+            name="description"
+            content="История запросов и сгенерированных изображений Neurox."
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #ffffff;
+            color: #18181b;
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.5;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+        .container {
+            width: min(1180px, calc(100% - 48px));
+            margin: 0 auto;
+        }
+
+        /* Header */
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.92);
+            border-bottom: 1px solid #f4f4f5;
+            backdrop-filter: blur(12px);
+        }
+
+        .header-inner {
+            height: 76px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 21px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-mark {
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9px;
+            background: #18181b;
+            color: #ffffff;
+            font-size: 18px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .header-link {
+            color: #52525b;
+            font-size: 14px;
+            transition: color 0.2s ease;
+        }
+
+        .header-link:hover {
+            color: #18181b;
+        }
+
+        /* Main */
+
+        .requests-section {
+            padding: 80px 0 100px;
+            background:
+                    radial-gradient(
+                            circle at 50% 0%,
+                            #fafafa 0,
+                            #ffffff 50%
+                    );
+        }
+
+        .requests-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .requests-header-content {
+            max-width: 720px;
+        }
+
+        .requests-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 12px;
+            margin-bottom: 20px;
+            border: 1px solid #e4e4e7;
+            border-radius: 999px;
+            background: #fafafa;
+            color: #52525b;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .requests-label-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #18181b;
+        }
+
+        .requests-header h1 {
+            margin: 0;
+            font-size: clamp(40px, 5vw, 58px);
+            line-height: 1.05;
+            letter-spacing: -2.5px;
+        }
+
+        .requests-header p {
+            max-width: 620px;
+            margin: 18px 0 0;
+            color: #71717a;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px;
+            padding: 0 20px;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition:
+                    background-color 0.2s ease,
+                    border-color 0.2s ease,
+                    transform 0.2s ease;
+        }
+
+        .button:hover {
+            transform: translateY(-1px);
+        }
+
+        .button-primary {
+            background: #18181b;
+            color: #ffffff;
+        }
+
+        .button-primary:hover {
+            background: #27272a;
+        }
+
+        .button-secondary {
+            background: #ffffff;
+            border-color: #e4e4e7;
+            color: #18181b;
+        }
+
+        .button-secondary:hover {
+            background: #fafafa;
+        }
+
+        /* Requests */
+
+        .requests-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .request-card {
+            display: grid;
+            grid-template-columns: 220px minmax(0, 1fr);
+            min-height: 220px;
+            overflow: hidden;
+            border: 1px solid #e4e4e7;
+            border-radius: 14px;
+            background: #ffffff;
+            transition:
+                    border-color 0.2s ease,
+                    box-shadow 0.2s ease,
+                    transform 0.2s ease;
+        }
+
+        .request-card:hover {
+            border-color: #d4d4d8;
+            box-shadow: 0 8px 25px rgba(24, 24, 27, 0.05);
+            transform: translateY(-1px);
+        }
+
+        .request-image {
+            position: relative;
+            min-height: 220px;
+            overflow: hidden;
+            background: #f4f4f5;
+        }
+
+        .request-image img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .request-image-placeholder {
+            width: 100%;
+            height: 100%;
+            min-height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                    linear-gradient(
+                            135deg,
+                            #f4f4f5,
+                            #fafafa
+                    );
+            color: #a1a1aa;
+            font-size: 13px;
+        }
+
+        .request-content {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            padding: 28px 30px;
+        }
+
+        .request-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .request-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: #52525b;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .request-status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #18181b;
+        }
+
+        .request-date {
+            color: #a1a1aa;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .request-title {
+            margin: 0 0 10px;
+            font-size: 18px;
+            line-height: 1.4;
+            letter-spacing: -0.3px;
+        }
+
+        .request-prompt {
+            margin: 0;
+            color: #71717a;
+            font-size: 14px;
+            line-height: 1.7;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .request-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: auto;
+            padding-top: 24px;
+        }
+
+        .request-type {
+            color: #a1a1aa;
+            font-size: 12px;
+        }
+
+        .request-action {
+            color: #18181b;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            cursor: pointer;
+        }
+
+        .request-action:hover {
+            color: #52525b;
+        }
+
+        .request-action.disabled {
+            color: #a1a1aa;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        /* Empty */
+
+        .empty-state {
+            padding: 70px 30px;
+            border: 1px dashed #d4d4d8;
+            border-radius: 14px;
+            background: #fafafa;
+            text-align: center;
+        }
+
+        .empty-icon {
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            border-radius: 12px;
+            background: #18181b;
+            color: #ffffff;
+            font-size: 21px;
+        }
+
+        .empty-state h2 {
+            margin: 0;
+            font-size: 22px;
+            letter-spacing: -0.5px;
+        }
+
+        .empty-state p {
+            max-width: 500px;
+            margin: 10px auto 24px;
+            color: #71717a;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        /* Loading */
+
+        .loading-state {
+            padding: 70px 30px;
+            border: 1px solid #e4e4e7;
+            border-radius: 14px;
+            background: #fafafa;
+            text-align: center;
+        }
+
+        .loading-spinner {
+            width: 34px;
+            height: 34px;
+            margin: 0 auto 18px;
+            border: 3px solid #e4e4e7;
+            border-top-color: #18181b;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .loading-state p {
+            margin: 0;
+            color: #71717a;
+            font-size: 14px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Error */
+
+        .error-state {
+            display: none;
+            padding: 50px 30px;
+            border: 1px solid #e4e4e7;
+            border-radius: 14px;
+            background: #fafafa;
+            text-align: center;
+        }
+
+        .error-state.visible {
+            display: block;
+        }
+
+        .error-state h2 {
+            margin: 0 0 8px;
+            font-size: 20px;
+        }
+
+        .error-state p {
+            margin: 0 0 22px;
+            color: #71717a;
+            font-size: 14px;
+        }
+
+        /* Pagination */
+
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 40px;
+        }
+
+        .pagination-link {
+            min-width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 12px;
+            border: 1px solid #e4e4e7;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #52525b;
+            font-size: 13px;
+            font-weight: 600;
+            transition:
+                    background-color 0.2s ease,
+                    border-color 0.2s ease,
+                    color 0.2s ease;
+        }
+
+        .pagination-link:hover {
+            border-color: #a1a1aa;
+            color: #18181b;
+        }
+
+        .pagination-link.active {
+            border-color: #18181b;
+            background: #18181b;
+            color: #ffffff;
+        }
+
+        .pagination-link.disabled {
+            color: #d4d4d8;
+            pointer-events: none;
+        }
+
+        /* Footer */
+
+        .footer {
+            padding: 65px 0 30px;
+            border-top: 1px solid #e4e4e7;
+            background: #fafafa;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr repeat(3, 1fr);
+            gap: 50px;
+            padding-bottom: 55px;
+        }
+
+        .footer-brand {
+            max-width: 300px;
+        }
+
+        .footer-brand p {
+            margin: 18px 0 0;
+            color: #71717a;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .footer-column h4 {
+            margin: 0 0 18px;
+            font-size: 13px;
+        }
+
+        .footer-column a {
+            display: block;
+            margin-bottom: 11px;
+            color: #71717a;
+            font-size: 13px;
+        }
+
+        .footer-column a:hover {
+            color: #18181b;
+        }
+
+        .footer-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding-top: 25px;
+            border-top: 1px solid #e4e4e7;
+        }
+
+        .copyright {
+            color: #a1a1aa;
+            font-size: 12px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            color: #a1a1aa;
+            font-size: 12px;
+        }
+
+        .footer-links a:hover {
+            color: #18181b;
+        }
+
+        /* Responsive */
+
+        @media (max-width: 900px) {
+
+            .requests-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .request-card {
+                grid-template-columns: 180px minmax(0, 1fr);
+            }
+
+            .request-image {
+                min-height: 200px;
+            }
+
+            .request-image-placeholder {
+                min-height: 200px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .container {
+                width: min(100% - 32px, 1180px);
+            }
+
+            .header-inner {
+                height: 68px;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .logo-mark {
+                width: 30px;
+                height: 30px;
+            }
+
+            .header-actions {
+                gap: 14px;
+            }
+
+            .header-link {
+                font-size: 13px;
+            }
+
+            .requests-section {
+                padding: 60px 0 75px;
+            }
+
+            .requests-header h1 {
+                font-size: 40px;
+                letter-spacing: -1.8px;
+            }
+
+            .requests-header .button {
+                width: 100%;
+            }
+
+            .request-card {
+                grid-template-columns: 1fr;
+            }
+
+            .request-image {
+                min-height: 240px;
+            }
+
+            .request-image-placeholder {
+                min-height: 240px;
+            }
+
+            .request-content {
+                padding: 22px 20px;
+            }
+
+            .request-meta {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .request-footer {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .pagination {
+                flex-wrap: wrap;
+            }
+
+            .footer {
+                padding-top: 50px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 35px 25px;
+            }
+
+            .footer-brand {
+                grid-column: 1 / -1;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="container header-inner">
+
+        <a href="/" class="logo">
+            <span class="logo-mark">✦</span>
+            <span>Neurox</span>
+        </a>
+
+        <div class="header-actions">
+
+            <a href="/profile" class="header-link">
+                ← Мой профиль
+            </a>
+
+            <a href="/logout" class="header-link">
+                Выйти
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <section class="requests-section">
+
+        <div class="container">
+
+            <div class="requests-header">
+
+                <div class="requests-header-content">
+
+                    <div class="requests-label">
+                        <span class="requests-label-dot"></span>
+                        История генераций
+                    </div>
+
+                    <h1>
+                        Мои запросы
+                    </h1>
+
+                    <p>
+                        Здесь находятся ваши предыдущие запросы
+                        и созданные изображения. Вы можете
+                        просмотреть результат и вернуться
+                        к истории генераций в любое время.
+                    </p>
+
+                </div>
+
+                <a
+                        href="/requests/create"
+                        class="button button-primary"
+                >
+                    Создать изображение
+                </a>
+
+            </div>
+
+
+            <!-- LOADING -->
+
+            <div
+                    id="loading-state"
+                    class="loading-state"
+            >
+
+                <div class="loading-spinner"></div>
+
+                <p>
+                    Загружаем историю запросов...
+                </p>
+
+            </div>
+
+
+            <!-- ERROR -->
+
+            <div
+                    id="error-state"
+                    class="error-state"
+            >
+
+                <h2>
+                    Не удалось загрузить историю
+                </h2>
+
+                <p id="error-message">
+                    Произошла ошибка при загрузке запросов.
+                </p>
+
+                <button
+                        id="retry-button"
+                        type="button"
+                        class="button button-primary"
+                >
+                    Повторить
+                </button>
+
+            </div>
+
+
+            <!-- REQUESTS LIST -->
+
+            <div
+                    id="requests-list"
+                    class="requests-list"
+                    style="display: none;"
+            ></div>
+
+
+            <!-- EMPTY -->
+
+            <div
+                    id="empty-state"
+                    class="empty-state"
+                    style="display: none;"
+            >
+
+                <div class="empty-icon">
+                    ✦
+                </div>
+
+                <h2>
+                    История пока пуста
+                </h2>
+
+                <p>
+                    Вы ещё не создавали изображений.
+                    Создайте первый запрос и здесь появится
+                    история ваших генераций.
+                </p>
+
+                <a
+                        href="/requests/create"
+                        class="button button-primary"
+                >
+                    Создать изображение
+                </a>
+
+            </div>
+
+
+            <!-- PAGINATION -->
+
+            <nav
+                    id="pagination"
+                    class="pagination"
+                    aria-label="Пагинация"
+                    style="display: none;"
+            ></nav>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="container">
+
+        <div class="footer-grid">
+
+            <div class="footer-brand">
+
+                <a href="/" class="logo">
+                    <span class="logo-mark">✦</span>
+                    <span>Neurox</span>
+                </a>
+
+                <p>
+                    Платформа для создания изображений
+                    с помощью искусственного интеллекта.
+                    Превращайте текстовые идеи в визуальные
+                    образы.
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Neurox
+                </h4>
+
+                <a href="/">
+                    Главная
+                </a>
+
+                <a href="/#features">
+                    Возможности
+                </a>
+
+                <a href="/#how-it-works">
+                    Как это работает
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Аккаунт
+                </h4>
+
+                <a href="/profile">
+                    Мой профиль
+                </a>
+
+                <a href="/requests">
+                    История запросов
+                </a>
+
+                <a href="/forgot-password">
+                    Изменить пароль
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Помощь
+                </h4>
+
+                <a href="/support">
+                    Поддержка
+                </a>
+
+                <a href="/privacy">
+                    Конфиденциальность
+                </a>
+
+                <a href="/terms">
+                    Условия использования
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <div class="copyright">
+                © 2026 Neurox. Все права защищены.
+            </div>
+
+            <div class="footer-links">
+
+                <a href="/privacy">
+                    Конфиденциальность
+                </a>
+
+                <a href="/terms">
+                    Условия использования
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<script>
+
+    /*
+     * =========================
+     * CONFIG
+     * =========================
+     */
+
+    const API_URL = "/api/v1";
+
+    const LIMIT = 10;
+
+
+    /*
+     * =========================
+     * ELEMENTS
+     * =========================
+     */
+
+    const loadingState =
+        document.getElementById("loading-state");
+
+    const errorState =
+        document.getElementById("error-state");
+
+    const errorMessage =
+        document.getElementById("error-message");
+
+    const retryButton =
+        document.getElementById("retry-button");
+
+    const requestsList =
+        document.getElementById("requests-list");
+
+    const emptyState =
+        document.getElementById("empty-state");
+
+    const pagination =
+        document.getElementById("pagination");
+
+
+    /*
+     * =========================
+     * STATE
+     * =========================
+     */
+
+    let currentOffset = 0;
+
+    let currentLimit = LIMIT;
+
+    let requests = [];
+
+    let total = null;
+
+
+    /*
+     * =========================
+     * AUTH
+     * =========================
+     */
+
+    function getAuthToken() {
+
+        const token =
+            localStorage.getItem("neurox_token");
+
+        if (!token) {
+
+            window.location.href = "/login";
+
+            throw new Error(
+                "Требуется авторизация."
+            );
+        }
+
+        return token;
+    }
+
+
+    /*
+     * =========================
+     * LOAD REQUESTS
+     * =========================
+     */
+
+    async function loadRequests(
+        offset = 0
+    ) {
+
+        currentOffset = offset;
+
+        showLoading();
+
+
+        try {
+
+            const token =
+                getAuthToken();
+
+
+            const response =
+                await fetch(
+                    `${API_URL}/requests?offset=${currentOffset}&limit=${currentLimit}`,
+                    {
+                        method: "GET",
+
+                        headers: {
+                            "Accept":
+                                "application/json",
+
+                            "Authorization":
+                                `Bearer ${token}`
+                        }
+                    }
+                );
+
+
+            /*
+             * PARSE RESPONSE
+             */
+
+            let data = null;
+
+            try {
+
+                data =
+                    await response.json();
+
+            } catch (_) {
+
+                data = null;
+
+            }
+
+
+            /*
+             * HTTP ERRORS
+             */
+
+            if (!response.ok) {
+
+                if (
+                    response.status === 401
+                ) {
+
+                    localStorage.removeItem(
+                        "neurox_token"
+                    );
+
+                    window.location.href =
+                        "/login";
+
+                    return;
+                }
+
+
+                throw new Error(
+                    data?.message ||
+                    data?.error ||
+                    getHttpErrorMessage(
+                        response.status
+                    )
+                );
+
+            }
+
+
+            /*
+             * NORMALIZE RESPONSE
+             */
+
+            requests =
+                normalizeRequests(
+                    data
+                );
+
+
+            total =
+                getTotalFromResponse(
+                    data
+                );
+
+
+            /*
+             * RENDER
+             */
+
+            renderRequests();
+
+            renderPagination();
+
+
+        } catch (error) {
+
+            console.error(
+                "Neurox requests error:",
+                error
+            );
+
+            showError(
+                error.message ||
+                "Не удалось загрузить историю запросов."
+            );
+
+        }
+
+    }
+
+
+    /*
+     * =========================
+     * NORMALIZE REQUESTS
+     * =========================
+     */
+
+    function normalizeRequests(data) {
+
+        if (Array.isArray(data)) {
+            return data;
+        }
+
+        if (
+            data &&
+            Array.isArray(data.requests)
+        ) {
+            return data.requests;
+        }
+
+        if (
+            data &&
+            Array.isArray(data.items)
+        ) {
+            return data.items;
+        }
+
+        if (
+            data &&
+            Array.isArray(data.data)
+        ) {
+            return data.data;
+        }
+
+        if (
+            data &&
+            Array.isArray(data.results)
+        ) {
+            return data.results;
+        }
+
+        return [];
+    }
+
+
+    /*
+     * =========================
+     * GET TOTAL
+     * =========================
+     */
+
+    function getTotalFromResponse(data) {
+
+        if (!data || Array.isArray(data)) {
+            return null;
+        }
+
+        if (
+            typeof data.total === "number"
+        ) {
+            return data.total;
+        }
+
+        if (
+            typeof data.total_count === "number"
+        ) {
+            return data.total_count;
+        }
+
+        if (
+            typeof data.totalCount === "number"
+        ) {
+            return data.totalCount;
+        }
+
+        if (
+            typeof data.count === "number"
+        ) {
+            return data.count;
+        }
+
+        if (
+            typeof data.pagination?.total === "number"
+        ) {
+            return data.pagination.total;
+        }
+
+        if (
+            typeof data.meta?.total === "number"
+        ) {
+            return data.meta.total;
+        }
+
+        return null;
+    }
+
+
+    /*
+     * =========================
+     * RENDER REQUESTS
+     * =========================
+     */
+
+    function renderRequests() {
+
+        requestsList.innerHTML = "";
+
+
+        if (!requests.length) {
+
+            requestsList.style.display =
+                "none";
+
+            emptyState.style.display =
+                "block";
+
+            pagination.style.display =
+                "none";
+
+            loadingState.style.display =
+                "none";
+
+            errorState.classList.remove(
+                "visible"
+            );
+
+            return;
+        }
+
+
+        emptyState.style.display =
+            "none";
+
+        requestsList.style.display =
+            "flex";
+
+        loadingState.style.display =
+            "none";
+
+        errorState.classList.remove(
+            "visible"
+        );
+
+
+        requests.forEach(
+            function (request) {
+
+                const card =
+                    createRequestCard(
+                        request
+                    );
+
+                requestsList.appendChild(
+                    card
+                );
+
+            }
+        );
+    }
+
+
+    /*
+     * =========================
+     * CREATE REQUEST CARD
+     * =========================
+     */
+
+    function createRequestCard(request) {
+
+        const article =
+            document.createElement("article");
+
+        article.className =
+            "request-card";
+
+
+        /*
+         * ID
+         */
+
+        const id =
+            request.id ??
+            request.request_id ??
+            request.requestId ??
+            "";
+
+
+        /*
+         * IMAGE
+         *
+         * Берём URL изображения
+         * из ответа API.
+         */
+
+        const image =
+            request.image ??
+            request.image_url ??
+            request.imageUrl ??
+            request.result ??
+            request.result_url ??
+            request.resultUrl ??
+            "";
+
+
+        /*
+         * PROMPT
+         */
+
+        const prompt =
+            request.prompt ??
+            request.text ??
+            request.description ??
+            "";
+
+
+        /*
+         * DATE
+         */
+
+        const date =
+            request.created_at ??
+            request.createdAt ??
+            request.date ??
+            request.created ??
+            request.timestamp ??
+            "";
+
+
+        /*
+         * STATUS
+         */
+
+        const status =
+            request.status ??
+            "completed";
+
+
+        /*
+         * TYPE
+         */
+
+        const type =
+            request.type ??
+            "Text to Image";
+
+
+        /*
+         * IMAGE BLOCK
+         */
+
+        const imageWrapper =
+            document.createElement("div");
+
+        imageWrapper.className =
+            "request-image";
+
+
+        if (image) {
+
+            const img =
+                document.createElement("img");
+
+            img.src =
+                image;
+
+            img.alt =
+                prompt ||
+                "Сгенерированное изображение";
+
+            img.loading =
+                "lazy";
+
+
+            img.addEventListener(
+                "error",
+                function () {
+
+                    imageWrapper.innerHTML = `
+                        <div class="request-image-placeholder">
+                            Изображение недоступно
+                        </div>
+                    `;
+
+                }
+            );
+
+
+            imageWrapper.appendChild(
+                img
+            );
+
+        } else {
+
+            imageWrapper.innerHTML = `
+                <div class="request-image-placeholder">
+                    Изображение отсутствует
+                </div>
+            `;
+
+        }
+
+
+        /*
+         * CONTENT
+         */
+
+        const content =
+            document.createElement("div");
+
+        content.className =
+            "request-content";
+
+
+        /*
+         * META
+         */
+
+        const meta =
+            document.createElement("div");
+
+        meta.className =
+            "request-meta";
+
+
+        const statusElement =
+            document.createElement("span");
+
+        statusElement.className =
+            "request-status";
+
+        const statusDot =
+            document.createElement("span");
+
+        statusDot.className =
+            "request-status-dot";
+
+
+        statusElement.appendChild(
+            statusDot
+        );
+
+        statusElement.appendChild(
+            document.createTextNode(
+                formatStatus(status)
+            )
+        );
+
+
+        const dateElement =
+            document.createElement("time");
+
+        dateElement.className =
+            "request-date";
+
+        dateElement.textContent =
+            formatDate(date);
+
+
+        meta.appendChild(
+            statusElement
+        );
+
+        meta.appendChild(
+            dateElement
+        );
+
+
+        /*
+         * TITLE
+         */
+
+        const title =
+            document.createElement("h2");
+
+        title.className =
+            "request-title";
+
+        title.textContent =
+            "Созданное изображение";
+
+
+        /*
+         * PROMPT
+         */
+
+        const promptElement =
+            document.createElement("p");
+
+        promptElement.className =
+            "request-prompt";
+
+        promptElement.textContent =
+            prompt ||
+            "Описание изображения отсутствует.";
+
+
+        /*
+         * FOOTER
+         */
+
+        const footer =
+            document.createElement("div");
+
+        footer.className =
+            "request-footer";
+
+
+        const typeElement =
+            document.createElement("span");
+
+        typeElement.className =
+            "request-type";
+
+        typeElement.textContent =
+            type;
+
+
+        /*
+         * =========================
+         * OPEN RESULT
+         * =========================
+         *
+         * Теперь эта кнопка НЕ ведёт
+         * на /requests/{id}.
+         *
+         * Она открывает непосредственно
+         * изображение из API в новой
+         * вкладке/окне браузера.
+         */
+
+        const action =
+            document.createElement("a");
+
+        action.className =
+            "request-action";
+
+        action.textContent =
+            "Открыть результат →";
+
+
+        if (image) {
+
+            action.href =
+                image;
+
+            action.target =
+                "_blank";
+
+            action.rel =
+                "noopener noreferrer";
+
+            /*
+             * Дополнительно используем
+             * window.open(), чтобы явно
+             * открыть результат отдельно.
+             */
+
+            action.addEventListener(
+                "click",
+                function (event) {
+
+                    event.preventDefault();
+
+                    openImageInNewWindow(
+                        image
+                    );
+
+                }
+            );
+
+        } else {
+
+            action.href =
+                "#";
+
+            action.classList.add(
+                "disabled"
+            );
+
+            action.title =
+                "Изображение недоступно";
+
+            action.addEventListener(
+                "click",
+                function (event) {
+
+                    event.preventDefault();
+
+                }
+            );
+
+        }
+
+
+        footer.appendChild(
+            typeElement
+        );
+
+        footer.appendChild(
+            action
+        );
+
+
+        content.appendChild(
+            meta
+        );
+
+        content.appendChild(
+            title
+        );
+
+        content.appendChild(
+            promptElement
+        );
+
+        content.appendChild(
+            footer
+        );
+
+
+        article.appendChild(
+            imageWrapper
+        );
+
+        article.appendChild(
+            content
+        );
+
+
+        return article;
+    }
+
+
+    /*
+     * =========================
+     * OPEN IMAGE
+     * =========================
+     *
+     * Открывает непосредственно
+     * URL изображения в новом окне.
+     */
+
+    function openImageInNewWindow(
+        imageUrl
+    ) {
+
+        if (!imageUrl) {
+            return;
+        }
+
+
+        const newWindow =
+            window.open(
+                imageUrl,
+                "_blank",
+                "noopener,noreferrer"
+            );
+
+
+        /*
+         * Некоторые браузеры могут
+         * вернуть null при блокировке
+         * popup. В этом случае обычный
+         * переход всё равно остаётся
+         * доступным через href.
+         */
+
+        if (newWindow) {
+
+            try {
+                newWindow.opener = null;
+            } catch (_) {
+                // Ничего не делаем.
+            }
+
+        }
+
+    }
+
+
+    /*
+     * =========================
+     * PAGINATION
+     * =========================
+     */
+
+    function renderPagination() {
+
+        pagination.innerHTML = "";
+
+
+        const hasPrevious =
+            currentOffset > 0;
+
+
+        let hasNext;
+
+
+        if (
+            typeof total === "number"
+        ) {
+
+            hasNext =
+                currentOffset +
+                currentLimit <
+                total;
+
+        } else {
+
+            hasNext =
+                requests.length >=
+                currentLimit;
+
+        }
+
+
+        if (
+            !hasPrevious &&
+            !hasNext
+        ) {
+
+            pagination.style.display =
+                "none";
+
+            return;
+        }
+
+
+        pagination.style.display =
+            "flex";
+
+
+        /*
+         * PREVIOUS
+         */
+
+        const previous =
+            document.createElement("a");
+
+        previous.className =
+            "pagination-link";
+
+
+        if (!hasPrevious) {
+
+            previous.classList.add(
+                "disabled"
+            );
+
+            previous.textContent =
+                "←";
+
+        } else {
+
+            previous.href =
+                buildPageUrl(
+                    currentOffset -
+                    currentLimit
+                );
+
+            previous.textContent =
+                "←";
+
+        }
+
+
+        pagination.appendChild(
+            previous
+        );
+
+
+        /*
+         * CURRENT PAGE
+         */
+
+        const currentPage =
+            Math.floor(
+                currentOffset /
+                currentLimit
+            ) + 1;
+
+
+        const current =
+            document.createElement("span");
+
+        current.className =
+            "pagination-link active";
+
+        current.textContent =
+            currentPage;
+
+
+        pagination.appendChild(
+            current
+        );
+
+
+        /*
+         * NEXT
+         */
+
+        const next =
+            document.createElement("a");
+
+        next.className =
+            "pagination-link";
+
+
+        if (!hasNext) {
+
+            next.classList.add(
+                "disabled"
+            );
+
+            next.textContent =
+                "→";
+
+        } else {
+
+            next.href =
+                buildPageUrl(
+                    currentOffset +
+                    currentLimit
+                );
+
+            next.textContent =
+                "→";
+
+        }
+
+
+        pagination.appendChild(
+            next
+        );
+
+
+        /*
+         * AJAX PAGINATION
+         */
+
+        pagination
+            .querySelectorAll(
+                "a:not(.disabled)"
+            )
+            .forEach(
+                function (link) {
+
+                    link.addEventListener(
+                        "click",
+                        function (event) {
+
+                            event.preventDefault();
+
+
+                            const url =
+                                new URL(
+                                    link.href,
+                                    window.location.origin
+                                );
+
+
+                            const offset =
+                                Number(
+                                    url.searchParams.get(
+                                        "offset"
+                                    ) || 0
+                                );
+
+
+                            loadRequests(
+                                offset
+                            );
+
+
+                            window.scrollTo({
+                                top: 0,
+                                behavior: "smooth"
+                            });
+
+                        }
+                    );
+
+                }
+            );
+    }
+
+
+    /*
+     * =========================
+     * BUILD PAGE URL
+     * =========================
+     */
+
+    function buildPageUrl(
+        offset
+    ) {
+
+        return (
+            `/requests?offset=${offset}&limit=${currentLimit}`
+        );
+
+    }
+
+
+    /*
+     * =========================
+     * LOADING
+     * =========================
+     */
+
+    function showLoading() {
+
+        loadingState.style.display =
+            "block";
+
+        errorState.classList.remove(
+            "visible"
+        );
+
+        requestsList.style.display =
+            "none";
+
+        emptyState.style.display =
+            "none";
+
+        pagination.style.display =
+            "none";
+
+    }
+
+
+    /*
+     * =========================
+     * ERROR
+     * =========================
+     */
+
+    function showError(
+        message
+    ) {
+
+        loadingState.style.display =
+            "none";
+
+        requestsList.style.display =
+            "none";
+
+        emptyState.style.display =
+            "none";
+
+        pagination.style.display =
+            "none";
+
+        errorMessage.textContent =
+            message;
+
+        errorState.classList.add(
+            "visible"
+        );
+
+    }
+
+
+    /*
+     * =========================
+     * RETRY
+     * =========================
+     */
+
+    retryButton.addEventListener(
+        "click",
+        function () {
+
+            loadRequests(
+                currentOffset
+            );
+
+        }
+    );
+
+
+    /*
+     * =========================
+     * STATUS
+     * =========================
+     */
+
+    function formatStatus(
+        status
+    ) {
+
+        const normalized =
+            String(
+                status || ""
+            ).toLowerCase();
+
+
+        switch (normalized) {
+
+            case "completed":
+            case "complete":
+            case "success":
+            case "succeeded":
+            case "done":
+                return "Готово";
+
+            case "pending":
+                return "В очереди";
+
+            case "processing":
+            case "generating":
+                return "Генерация...";
+
+            case "failed":
+            case "error":
+                return "Ошибка";
+
+            default:
+                return status ||
+                    "Готово";
+
+        }
+
+    }
+
+
+    /*
+     * =========================
+     * DATE
+     * =========================
+     */
+
+    function formatDate(
+        value
+    ) {
+
+        if (!value) {
+            return "";
+        }
+
+
+        const date =
+            new Date(value);
+
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+
+            return value;
+
+        }
+
+
+        return new Intl.DateTimeFormat(
+            "ru-RU",
+            {
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        ).format(date);
+
+    }
+
+
+    /*
+     * =========================
+     * HTTP ERRORS
+     * =========================
+     */
+
+    function getHttpErrorMessage(
+        status
+    ) {
+
+        switch (status) {
+
+            case 400:
+                return "Некорректный запрос.";
+
+            case 401:
+                return "Сессия истекла. Войдите в аккаунт снова.";
+
+            case 403:
+                return "У вас нет доступа к истории запросов.";
+
+            case 404:
+                return "Endpoint истории запросов не найден.";
+
+            case 500:
+                return "Ошибка сервера.";
+
+            default:
+                return `Ошибка сервера (${status}).`;
+
+        }
+
+    }
+
+
+    /*
+     * =========================
+     * INITIAL LOAD
+     * =========================
+     */
+
+    loadRequests(0);
+
+</script>
+
+</body>
+</html>
